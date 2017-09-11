@@ -55,9 +55,9 @@ describe("a Shopping List Factory", function() {
     const groceries = shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    const mangos = shoppingListFactory.newShoppingListItem(groceries, {
+    const mangos = shoppingListFactory.newShoppingListItem({
       title: "Mangos"
-    });
+    }, groceries);
     mangos._id.should.be.a("string")
       .with.length(30)
       .that.is.a.singleLine()
@@ -75,7 +75,7 @@ describe("a Shopping List Factory", function() {
 
   it("should make a new Shopping List Item without properties", function() {
     const shoppingList = shoppingListFactory.newShoppingList();
-    const shoppingListItem = shoppingListFactory.newShoppingListItem(shoppingList);
+    const shoppingListItem = shoppingListFactory.newShoppingListItem({}, shoppingList);
     shoppingListItem._id.should.be.a("string")
       .with.length(30)
       .that.is.a.singleLine()
@@ -102,9 +102,9 @@ describe("a Shopping List Factory", function() {
     const groceries = shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    const mangos = shoppingListFactory.newShoppingListItem(groceries, {
+    const mangos = shoppingListFactory.newShoppingListItem({
       title: "Mangos"
-    });
+    }, groceries);
     const groceriesItemList = shoppingListFactory.newShoppingListItemList([mangos]);
     List.isList(groceriesItemList).should.be.true;
     groceriesItemList.isEmpty().should.be.false;
@@ -116,12 +116,12 @@ describe("a Shopping List Factory", function() {
     const groceries = shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    const mangos = shoppingListFactory.newShoppingListItem(groceries, {
+    const mangos = shoppingListFactory.newShoppingListItem({
       title: "Mangos"
-    });
-    const oranges = shoppingListFactory.newShoppingListItem(groceries, {
+    }, groceries);
+    const oranges = shoppingListFactory.newShoppingListItem({
       title: "Oranges"
-    });
+    }, groceries);
     const groceriesItemList = shoppingListFactory.newShoppingListItemList([mangos, oranges]);
     List.isList(groceriesItemList).should.be.true;
     groceriesItemList.isEmpty().should.be.false;

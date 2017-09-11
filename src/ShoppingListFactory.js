@@ -51,13 +51,13 @@ exports.ShoppingListFactory = class {
     return shoppingList;
   }
 
-  newShoppingListItem(shoppingList, values) {
+  newShoppingListItem(values, shoppingList) {
     let shoppingListItem = new this._ShoppingListItem(values);
     if (shoppingListItem._id === undefined) {
-      shoppingListItem = shoppingListItem.mergeDeep({
-        _id: "item:" + cuid(),
-        list: shoppingList._id
-      });
+      shoppingListItem = shoppingListItem.set("_id", "item:" + cuid());
+    }
+    if (shoppingListItem.list === undefined && shoppingList) {
+      shoppingListItem = shoppingListItem.set("list", shoppingList._id);
     }
     return shoppingListItem;
   }

@@ -147,9 +147,9 @@ describe("a Shopping List Repository for PouchDB", function() {
       title: "Groceries"
     });
     shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
-      const mangos = this.shoppingListFactory.newShoppingListItem(groceries, {
+      const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
-      });
+      }, groceries);
       return shoppingListRepository.postItem(mangos);
     }).should.be.fulfilled.then(mangosAfterPost => {
       mangosAfterPost.should.be.an.instanceof(Record);
