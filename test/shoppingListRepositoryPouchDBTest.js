@@ -60,7 +60,6 @@ describe("a Shopping List Repository for PouchDB", function() {
       title: "Groceries"
     });
     let revAfterPost;
-    let groceriesAfterPost;
     shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       revAfterPost = groceriesAfterPost._rev;
       return shoppingListRepository.get(groceriesAfterPost._id);
