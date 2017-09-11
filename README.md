@@ -159,3 +159,165 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
   console.log(shoppingList._deleted);     // true
 });
 ```
+
+### Shopping List Items
+
+#### Making a New Shopping List Item
+
+Use a Shopping List Factory to make a new Shopping List Item attached to a Shopping List:
+
+```javascript
+const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+
+const shoppingListFactory = new ShoppingListFactory();
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+
+console.log(shoppingListItem._id);        // item:…
+console.log(shoppingListItem._rev);       // undefined
+console.log(shoppingListItem.title);      // Mangos
+```
+
+#### Creating a Shopping List Item in a Database
+
+Use a Shopping List Repository to create a Shopping List Item in a database:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const PouchDB = require("pouchdb");
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+
+shoppingListRepository.post(shoppingList).then(shoppingList => {
+  return shoppingListRepository.postItem(shoppingListItem);
+}).then(shoppingListItem => {
+  console.log(shoppingListItem._id);      // item:…
+  console.log(shoppingListItem._rev);     // 1-…
+  console.log(shoppingListItem.title);    // Mangos
+});
+```
+
+#### Reading a Shopping List Item from a Database
+
+Use a Shopping List Repository to read a Shopping List Item from the database when you know the `_id` value:
+
+```javascript
+const { ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const PouchDB = require("pouchdb");
+
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+// Replace "item:cj6mn7e36000001p9n14fgk6s" with the _id value for your Shopping List
+shoppingListRepository.getItem("item:cj6mn7e36000001p9n14fgk6s").then(shoppingListItem => {
+  console.log(shoppingListItem._id);      // item:cj6mn7e36000001p9n14fgk6s
+  console.log(shoppingListItem._rev);     // 1-…
+});
+```
+
+#### Modifying a Shopping List Item
+
+Shopping List Items are [Immutable.js Record](https://facebook.github.io/immutable-js/docs/#/Record) objects. Use the `set` method or the `mergeDeep` method to make a modified copy of a Shopping List Item:
+
+```javascript
+const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+
+const shoppingListFactory = new ShoppingListFactory();
+
+let shoppingListItem = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+});
+
+// Shopping List Item objects are immutable, so we assign the new object to our local shoppingListItem variable
+shoppingListItem = shoppingListItem.set("checked", true);
+
+console.log(shoppingListItem.checked);    // true
+
+shoppingListItem = shoppingListItem.mergeDeep({
+  title: "Organic Mangos",
+  checked: false
+});
+
+console.log(shoppingListItem.title);      // Organic Mangos
+console.log(shoppingListItem.checked);    // false
+```
+
+#### Updating a Shopping List Item in a Database
+
+Use a Shopping List Repository to update a Shopping List Item in a database, after saving it to a database:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const PouchDB = require("pouchdb");
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+
+shoppingListRepository.post(shoppingList).then(shoppingList => {
+  return shoppingListRepository.postItem(shoppingListItem);
+}).then(shoppingListItem => {
+  shoppingListItem = shoppingListItem.set("checked", true);
+  return shoppingListRepository.putItem(shoppingListItem);
+}).then(shoppingListItem => {
+  console.log(shoppingListItem._rev);     // 2-…
+  console.log(shoppingListItem.checked);  // true
+});
+```
+
+#### Deleting a Shopping List Item from a Database
+
+Use a Shopping List Repository to delete a Shopping List Item from a database, after saving it to a database:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const PouchDB = require("pouchdb");
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+
+shoppingListRepository.post(shoppingList).then(shoppingList => {
+  return shoppingListRepository.postItem(shoppingListItem);
+}).then(shoppingListItem => {
+  console.log(shoppingListItem._id);      // item:…
+  console.log(shoppingListItem._rev);     // 1-…
+  console.log(shoppingListItem.title);    // Mangos
+  return shoppingListRepository.deleteItem(shoppingListItem);
+}).then(shoppingListItem => {
+  console.log(shoppingListItem._rev);     // 2-…
+  console.log(shoppingListItem._deleted); // true
+});
+```
