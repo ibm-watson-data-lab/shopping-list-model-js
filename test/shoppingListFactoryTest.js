@@ -59,14 +59,14 @@ describe("a Shopping List Factory", function() {
       title: "Mangos"
     });
     mangos._id.should.be.a("string")
-      .with.length(61)
+      .with.length(30)
       .that.is.a.singleLine()
-      .and.startsWith(groceries._id)
-      .and.has.indexOf(":item:", 30);
+      .and.startsWith("item:");
     should.not.exist(mangos._rev);
     mangos._deleted.should.equal(false);
     mangos.type.should.equal("item");
     mangos.version.should.equal(1);
+    mangos.list.should.equal(groceries._id);
     mangos.title.should.equal("Mangos");
     mangos.checked.should.equal(false);
     should.not.exist(mangos.createdAt);
@@ -77,14 +77,14 @@ describe("a Shopping List Factory", function() {
     const shoppingList = shoppingListFactory.newShoppingList();
     const shoppingListItem = shoppingListFactory.newShoppingListItem(shoppingList);
     shoppingListItem._id.should.be.a("string")
-      .with.length(61)
+      .with.length(30)
       .that.is.a.singleLine()
-      .and.startsWith(shoppingList._id)
-      .and.has.indexOf(":item:", 30);
+      .and.startsWith("item:");
     should.not.exist(shoppingListItem._rev);
     shoppingListItem._deleted.should.equal(false);
     shoppingListItem.type.should.equal("item");
     shoppingListItem.version.should.equal(1);
+    shoppingListItem.list.should.equal(shoppingList._id);
     should.not.exist(shoppingListItem.title);
     shoppingListItem.checked.should.equal(false);
     should.not.exist(shoppingListItem.createdAt);

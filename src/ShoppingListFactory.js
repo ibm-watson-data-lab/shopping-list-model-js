@@ -25,6 +25,7 @@ exports.ShoppingListFactory = class {
       _deleted: false,
       type: "item",
       version: 1,
+      list: undefined,
       title: undefined,
       checked: false,
       createdAt: undefined,
@@ -53,7 +54,10 @@ exports.ShoppingListFactory = class {
   newShoppingListItem(shoppingList, values) {
     let shoppingListItem = new this._ShoppingListItem(values);
     if (shoppingListItem._id === undefined) {
-      shoppingListItem = shoppingListItem.set("_id", shoppingList._id + ":item:" + cuid());
+      shoppingListItem = shoppingListItem.mergeDeep({
+        _id: "item:" + cuid(),
+        list: shoppingList._id
+      });
     }
     return shoppingListItem;
   }

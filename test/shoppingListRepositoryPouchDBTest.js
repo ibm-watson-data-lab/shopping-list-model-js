@@ -154,13 +154,13 @@ describe("a Shopping List Repository for PouchDB", function() {
     }).should.be.fulfilled.then(mangosAfterPost => {
       mangosAfterPost.should.be.an.instanceof(Record);
       mangosAfterPost._id.should.be.a("string")
-        .with.length(61)
+        .with.length(30)
         .that.is.a.singleLine()
-        .and.startsWith(groceries._id)
-        .and.has.indexOf(":item:", 30);
+        .and.startsWith("item:");
       mangosAfterPost.should.have.deep.property("_rev").that.is.a("string");
       mangosAfterPost.should.have.deep.property("type", "item");
       mangosAfterPost.should.have.deep.property("version", 1);
+      mangosAfterPost.should.have.deep.property("list", groceries._id);
       mangosAfterPost.should.have.deep.property("title", "Mangos");
       mangosAfterPost.should.have.deep.property("checked", false);
       mangosAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
