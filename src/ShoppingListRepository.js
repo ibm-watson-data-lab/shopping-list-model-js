@@ -10,4 +10,12 @@ exports.ShoppingListRepository = class {
 
   delete(shoppingList) { }
 
+  postItem(shoppingListItem) { }
+
+  putItem(shoppingListItem) { }
+
+  getItem(shoppingListItemId) { }
+
+  deleteItem(shoppingListItem) { }
+
 }
