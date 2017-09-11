@@ -114,4 +114,9 @@ exports.ShoppingListRepositoryPouchDB = class extends ShoppingListRepository {
     });
   }
 
+  deleteItem(shoppingListItem) {
+    this._guardShoppingListItem(shoppingListItem);
+    return this._delete(shoppingListItem);
+  }
+
 }
