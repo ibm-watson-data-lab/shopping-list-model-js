@@ -12,6 +12,8 @@ exports.ShoppingListRepository = class {
 
   postItem(shoppingListItem) { }
 
+  postItemsBulk(shoppingListItems) { }
+
   putItem(shoppingListItem) { }
 
   getItem(shoppingListItemId) { }

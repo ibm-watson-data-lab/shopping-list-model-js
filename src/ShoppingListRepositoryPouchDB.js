@@ -101,6 +101,16 @@ exports.ShoppingListRepositoryPouchDB = class extends ShoppingListRepository {
     return this._post(shoppingListItem);
   }
 
+  postItemsBulk(shoppingListItems) {
+    let postedItems = [];
+    shoppingListItems.forEach(shoppingListItem => {
+      postedItems.push(this.postItem(shoppingListItem));
+    });
+    return Promise.all(postedItems).then(shoppingListItems => {
+      return this._shoppingListFactory.newShoppingListItemList(shoppingListItems);
+    });
+  }
+
   putItem(shoppingListItem) {
     this._guardShoppingListItem(shoppingListItem);
     return this._put(shoppingListItem);
