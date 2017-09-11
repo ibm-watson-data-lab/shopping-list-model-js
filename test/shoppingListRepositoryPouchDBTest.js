@@ -168,7 +168,32 @@ describe("a Shopping List Repository for PouchDB", function() {
   });
 
   it("should read a Shopping List Item", function(done) {
-    this.skip();
+    const groceries = this.shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    let revAfterPost;
+    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+      const mangos = this.shoppingListFactory.newShoppingListItem({
+        title: "Mangos"
+      }, groceries);
+      return shoppingListRepository.postItem(mangos);
+    }).should.be.fulfilled.then(mangosAfterPost => {
+      revAfterPost = mangosAfterPost._rev;
+      return shoppingListRepository.getItem(mangosAfterPost._id);
+    }).should.be.fulfilled.then(mangosAfterGet => {
+      mangosAfterGet.should.be.an.instanceof(Record);
+      mangosAfterGet._id.should.be.a("string")
+        .with.length(30)
+        .that.is.a.singleLine()
+        .and.startsWith("item:");
+      mangosAfterGet.should.have.deep.property("_rev").that.is.a("string").and.does.equal(revAfterPost);
+      mangosAfterGet.should.have.deep.property("type", "item");
+      mangosAfterGet.should.have.deep.property("version", 1);
+      mangosAfterGet.should.have.deep.property("title", "Mangos");
+      mangosAfterGet.should.have.deep.property("checked", false);
+      mangosAfterGet.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
+      mangosAfterGet.should.have.deep.property("updatedAt", "2017-08-30T02:40:08.000Z");
+    }).should.notify(done);
   });
 
   it("should update a Shopping List Item", function(done) {

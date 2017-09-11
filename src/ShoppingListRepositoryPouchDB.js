@@ -101,4 +101,12 @@ exports.ShoppingListRepositoryPouchDB = class extends ShoppingListRepository {
     return this._post(shoppingListItem);
   }
 
+  getItem(shoppingListItemId) {
+    return this._get(shoppingListItemId).then(doc => {
+      const shoppingListItem = this._shoppingListFactory.newShoppingListItem(doc);
+      this._guardShoppingListItem(shoppingListItem);
+      return shoppingListItem;
+    });
+  }
+
 }
