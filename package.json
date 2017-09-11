@@ -4,7 +4,8 @@
   "description": "Domain model implementation for the Shopping List series of Offline First demo apps.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "repl": "node repl.js"
   },
   "repository": {
     "type": "git",
