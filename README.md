@@ -35,9 +35,9 @@ let shoppingList = shoppingListFactory.newShoppingList({
   title: "Groceries"
 });
 
-console.log(shoppingList._id);        // list:…
-console.log(shoppingList._rev);       // undefined
-console.log(shoppingList.title);      // Groceries
+console.log(shoppingList._id);            // list:…
+console.log(shoppingList._rev);           // undefined
+console.log(shoppingList.title);          // Groceries
 ```
 
 #### Creating a Shopping List in a Database
@@ -57,9 +57,9 @@ let shoppingList = shoppingListFactory.newShoppingList({
 });
 
 shoppingListRepository.post(shoppingList).then(shoppingList => {
-  console.log(shoppingList._id);      // list:…
-  console.log(shoppingList._rev);     // 1-…
-  console.log(shoppingList.title);    // Groceries
+  console.log(shoppingList._id);          // list:…
+  console.log(shoppingList._rev);         // 1-…
+  console.log(shoppingList.title);        // Groceries
 });
 ```
 
@@ -76,8 +76,8 @@ const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
 
 // Replace "list:cj6mj1zfj000001n1ugjfkj33" with the _id value for your Shopping List
 shoppingListRepository.get("list:cj6mj1zfj000001n1ugjfkj33").then(shoppingList => {
-  console.log(shoppingList._id);      // list:cj6mj1zfj000001n1ugjfkj33
-  console.log(shoppingList._rev);     // 1-…
+  console.log(shoppingList._id);          // list:cj6mj1zfj000001n1ugjfkj33
+  console.log(shoppingList._rev);         // 1-…
 });
 ```
 
@@ -97,15 +97,15 @@ let shoppingList = shoppingListFactory.newShoppingList({
 // Shopping List objects are immutable, so we assign the new object to our local shoppingList variable
 shoppingList = shoppingList.set("checked", true);
 
-console.log(shoppingList.checked);    // true
+console.log(shoppingList.checked);        // true
 
 shoppingList = shoppingList.mergeDeep({
   title: "Groceries for Dinner Party",
-  checked: false,
+  checked: false
 });
 
-console.log(shoppingList.title);      // Groceries for Dinner Party
-console.log(shoppingList.checked);    // false
+console.log(shoppingList.title);          // Groceries for Dinner Party
+console.log(shoppingList.checked);        // false
 ```
 
 #### Updating a Shopping List in a Database
@@ -128,8 +128,8 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
   shoppingList = shoppingList.set("checked", true);
   return shoppingListRepository.put(shoppingList);
 }).then(shoppingList => {
-  console.log(shoppingList._rev);     // 2-…
-  console.log(shoppingList.checked);  // true
+  console.log(shoppingList._rev);         // 2-…
+  console.log(shoppingList.checked);      // true
 });
 ```
 
@@ -150,12 +150,12 @@ let shoppingList = shoppingListFactory.newShoppingList({
 });
 
 shoppingListRepository.post(shoppingList).then(shoppingList => {
-  console.log(shoppingList._id);      // list:…
-  console.log(shoppingList._rev);     // 1-…
-  console.log(shoppingList.title);    // Groceries
+  console.log(shoppingList._id);          // list:…
+  console.log(shoppingList._rev);         // 1-…
+  console.log(shoppingList.title);        // Groceries
   return shoppingListRepository.delete(shoppingList);
 }).then(shoppingList => {
-  console.log(shoppingList._rev);     // 2-…
-  console.log(shoppingList._deleted); // true
+  console.log(shoppingList._rev);         // 2-…
+  console.log(shoppingList._deleted);     // true
 });
 ```
