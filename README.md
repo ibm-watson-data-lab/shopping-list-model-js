@@ -9,13 +9,13 @@
 This package can be installed via npm:
 
 ```javascript
-npm install @ibm-shopping-list/model
+npm install ibm-shopping-list-model
 ```
 
 To use the Shopping List Factory and the Shopping List Repository PouchDB implementation:
 
 ```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 ```
 
 ## Usage
@@ -27,7 +27,7 @@ const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-sho
 Use a Shopping List Factory to make a new Shopping List:
 
 ```javascript
-const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory } = require("ibm-shopping-list-model");
 
 const shoppingListFactory = new ShoppingListFactory();
 
@@ -45,7 +45,7 @@ console.log(shoppingList.title);                // Groceries
 Use a Shopping List Repository to create a Shopping List in a database:
 
 ```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
@@ -69,7 +69,7 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
 Use a Shopping List Repository to read a Shopping List from the database when you know the `_id` value:
 
 ```javascript
-const { ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
@@ -88,7 +88,7 @@ shoppingListRepository.get("list:cj6mj1zfj000001n1ugjfkj33").then(shoppingList =
 Shopping Lists are [Immutable.js Record](https://facebook.github.io/immutable-js/docs/#/Record) objects. Use the `set` method or the `mergeDeep` method to make a modified copy of a Shopping List:
 
 ```javascript
-const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory } = require("ibm-shopping-list-model");
 
 const shoppingListFactory = new ShoppingListFactory();
 
@@ -115,7 +115,7 @@ console.log(shoppingList.checked);              // false
 Use a Shopping List Repository to update a Shopping List in a database, after saving it to a database:
 
 ```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
@@ -141,7 +141,7 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
 Use a Shopping List Repository to delete a Shopping List from a database, after saving it to a database:
 
 ```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
@@ -171,7 +171,7 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
 Use a Shopping List Factory to make a new Shopping List Item attached to a Shopping List:
 
 ```javascript
-const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory } = require("ibm-shopping-list-model");
 
 const shoppingListFactory = new ShoppingListFactory();
 
@@ -193,7 +193,7 @@ console.log(shoppingListItem.title);            // Mangos
 Use a Shopping List Repository to create a Shopping List Item in a database:
 
 ```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
@@ -223,7 +223,7 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
 Use a Shopping List Repository to read a Shopping List Item from the database when you know the `_id` value:
 
 ```javascript
-const { ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
@@ -242,7 +242,7 @@ shoppingListRepository.getItem("item:cj6mn7e36000001p9n14fgk6s").then(shoppingLi
 Shopping List Items are [Immutable.js Record](https://facebook.github.io/immutable-js/docs/#/Record) objects. Use the `set` method or the `mergeDeep` method to make a modified copy of a Shopping List Item:
 
 ```javascript
-const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory } = require("ibm-shopping-list-model");
 
 const shoppingListFactory = new ShoppingListFactory();
 
@@ -269,7 +269,7 @@ console.log(shoppingListItem.checked);          // false
 Use a Shopping List Repository to update a Shopping List Item in a database, after saving it to a database:
 
 ```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
@@ -301,7 +301,7 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
 Use a Shopping List Repository to delete a Shopping List Item from a database, after saving it to a database:
 
 ```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
@@ -337,7 +337,7 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
 Use a Shopping List Factory to make a new Shopping List Item List:
 
 ```javascript
-const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory } = require("ibm-shopping-list-model");
 
 const shoppingListFactory = new ShoppingListFactory();
 
@@ -366,7 +366,7 @@ console.log(groceriesItemList.get(1).title);    // Oranges
 Shopping List Item Lists are [Immutable.js Lists](https://facebook.github.io/immutable-js/docs/#/List) objects. Use the `push` method, the `delete` method, or other persistent change List methods to make a modified copy of a Shopping List Item List:
 
 ```javascript
-const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory } = require("ibm-shopping-list-model");
 
 const shoppingListFactory = new ShoppingListFactory();
 
@@ -410,7 +410,7 @@ console.log(groceriesItemList.get(1).title);    // Pears
 Use a Shopping List Repository to read a Shopping List Item List from the database when you know the `_id` value of the parent Shopping List:
 
 ```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
