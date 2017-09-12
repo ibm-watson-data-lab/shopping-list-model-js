@@ -47,6 +47,7 @@ Use a Shopping List Repository to create a Shopping List in a database:
 ```javascript
 const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
 const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
 
 const shoppingListFactory = new ShoppingListFactory();
 const db = new PouchDB("shopping-list");
@@ -70,6 +71,7 @@ Use a Shopping List Repository to read a Shopping List from the database when yo
 ```javascript
 const { ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
 const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
 
 const db = new PouchDB("shopping-list");
 const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
@@ -115,6 +117,7 @@ Use a Shopping List Repository to update a Shopping List in a database, after sa
 ```javascript
 const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
 const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
 
 const shoppingListFactory = new ShoppingListFactory();
 const db = new PouchDB("shopping-list");
@@ -140,6 +143,7 @@ Use a Shopping List Repository to delete a Shopping List from a database, after 
 ```javascript
 const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
 const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
 
 const shoppingListFactory = new ShoppingListFactory();
 const db = new PouchDB("shopping-list");
@@ -191,6 +195,7 @@ Use a Shopping List Repository to create a Shopping List Item in a database:
 ```javascript
 const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
 const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
 
 const shoppingListFactory = new ShoppingListFactory();
 const db = new PouchDB("shopping-list");
@@ -220,6 +225,7 @@ Use a Shopping List Repository to read a Shopping List Item from the database wh
 ```javascript
 const { ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
 const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
 
 const db = new PouchDB("shopping-list");
 const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
@@ -265,6 +271,7 @@ Use a Shopping List Repository to update a Shopping List Item in a database, aft
 ```javascript
 const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
 const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
 
 const shoppingListFactory = new ShoppingListFactory();
 const db = new PouchDB("shopping-list");
@@ -296,6 +303,7 @@ Use a Shopping List Repository to delete a Shopping List Item from a database, a
 ```javascript
 const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
 const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
 
 const shoppingListFactory = new ShoppingListFactory();
 const db = new PouchDB("shopping-list");
