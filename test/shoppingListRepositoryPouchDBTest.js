@@ -183,7 +183,8 @@ describe("a Shopping List Repository for PouchDB", function() {
       pears = this.shoppingListFactory.newShoppingListItem({
         title: "Pears"
       }, groceries);
-      return this.shoppingListRepository.postItemsBulk([mangos, oranges, pears]);
+      const groceriesItemList = this.shoppingListFactory.newShoppingListItemList([mangos, oranges, pears]);
+      return this.shoppingListRepository.postItemsBulk(groceriesItemList);
     }).should.be.fulfilled.then(groceriesItemList => {
       List.isList(groceriesItemList).should.be.true;
       groceriesItemList.isEmpty().should.be.false;
