@@ -329,3 +329,124 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
   console.log(shoppingListItem._deleted);       // true
 });
 ```
+
+### Shopping List Item Lists
+
+#### Making a New Shopping List Item List
+
+Use a Shopping List Factory to make a new Shopping List Item List:
+
+```javascript
+const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+
+const shoppingListFactory = new ShoppingListFactory();
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
+  title: "Oranges"
+}, shoppingList);
+
+let groceriesItemList = shoppingListFactory.newShoppingListItemList([
+  shoppingListItem01,
+  shoppingListItem02
+]);
+
+console.log(groceriesItemList.get(0).title);    // Mangos
+console.log(groceriesItemList.get(1).title);    // Oranges
+```
+
+#### Modifying a Shopping List Item List
+
+Shopping List Item Lists are [Immutable.js Lists](https://facebook.github.io/immutable-js/docs/#/List) objects. Use the `push` method, the `delete` method, or other persistent change List methods to make a modified copy of a Shopping List Item List:
+
+```javascript
+const { ShoppingListFactory } = require("@ibm-shopping-list/model");
+
+const shoppingListFactory = new ShoppingListFactory();
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
+  title: "Oranges"
+}, shoppingList);
+
+let groceriesItemList = shoppingListFactory.newShoppingListItemList([
+  shoppingListItem01,
+  shoppingListItem02
+]);
+
+console.log(groceriesItemList.get(0).title);    // Mangos
+console.log(groceriesItemList.get(1).title);    // Oranges
+
+let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
+  title: "Pears"
+}, shoppingList);
+
+groceriesItemList = groceriesItemList.push(shoppingListItem03);
+
+console.log(groceriesItemList.get(0).title);    // Mangos
+console.log(groceriesItemList.get(1).title);    // Oranges
+console.log(groceriesItemList.get(2).title);    // Pears
+
+groceriesItemList = groceriesItemList.delete(0);
+
+console.log(groceriesItemList.get(0).title);    // Oranges
+console.log(groceriesItemList.get(1).title);    // Pears
+```
+
+#### Reading a Shopping List Item List from a Database
+
+Use a Shopping List Repository to read a Shopping List Item List from the database when you know the `_id` value of the parent Shopping List:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("@ibm-shopping-list/model");
+const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
+  title: "Oranges"
+}, shoppingList);
+let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
+  title: "Pears"
+}, shoppingList);
+
+let groceriesItemList = shoppingListFactory.newShoppingListItemList([
+  shoppingListItem01,
+  shoppingListItem02,
+  shoppingListItem03
+]);
+
+shoppingListRepository.ensureIndexes().then(result => {
+  return shoppingListRepository.post(shoppingList);
+}).then(shoppingList => {
+  return shoppingListRepository.postItemsBulk(groceriesItemList);
+}).then(groceriesItemList => {
+  return shoppingListRepository.getItemList(shoppingList._id);
+}).then(groceriesItemList => {
+  console.log(groceriesItemList.get(0).title);  // Mangos
+  console.log(groceriesItemList.get(1).title);  // Oranges
+  console.log(groceriesItemList.get(2).title);  // Pears
+});
+```
