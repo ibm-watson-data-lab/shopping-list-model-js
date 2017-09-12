@@ -13,21 +13,18 @@ const { Record, List } = require("immutable");
 
 describe("a Shopping List Repository for PouchDB", function() {
 
-  let db;
-  let shoppingListRepository;
-
   before(function() {
     this.clock = sinon.useFakeTimers(1504060808000);
   });
 
   beforeEach(function() {
     this.shoppingListFactory = new ShoppingListFactory();
-    db = new PouchDB("test");
-    shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+    this.db = new PouchDB("test");
+    this.shoppingListRepository = new ShoppingListRepositoryPouchDB(this.db);
   });
 
   afterEach(function() {
-    db.destroy();
+    this.db.destroy();
   });
 
   after(function() {
@@ -38,7 +35,7 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       groceriesAfterPost.should.be.an.instanceof(Record);
       groceriesAfterPost._id.should.be.a("string")
         .with.length(30)
@@ -60,9 +57,9 @@ describe("a Shopping List Repository for PouchDB", function() {
       title: "Groceries"
     });
     let revAfterPost;
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       revAfterPost = groceriesAfterPost._rev;
-      return shoppingListRepository.get(groceriesAfterPost._id);
+      return this.shoppingListRepository.get(groceriesAfterPost._id);
     }).should.be.fulfilled.then(groceriesAfterGet => {
       groceriesAfterGet.should.be.an.instanceof(Record);
       groceriesAfterGet._id.should.be.a("string")
@@ -86,11 +83,11 @@ describe("a Shopping List Repository for PouchDB", function() {
     });
     let revAfterPost;
     let clock;
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       revAfterPost = groceriesAfterPost._rev;
       const groceriesAfterPostUpdated = groceriesAfterPost.set("checked", true);
       clock = sinon.useFakeTimers(1504060809314);
-      return shoppingListRepository.put(groceriesAfterPostUpdated);
+      return this.shoppingListRepository.put(groceriesAfterPostUpdated);
     }).should.be.fulfilled.then(groceriesAfterPut => {
       groceriesAfterPut.should.be.an.instanceof(Record);
       groceriesAfterPut._id.should.be.a("string")
@@ -116,11 +113,11 @@ describe("a Shopping List Repository for PouchDB", function() {
     let idAfterPost;
     let revAfterPost;
     let clock;
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       idAfterPost = groceriesAfterPost._id;
       revAfterPost = groceriesAfterPost._rev;
       clock = sinon.useFakeTimers(1504060809314);
-      return shoppingListRepository.delete(groceriesAfterPost);
+      return this.shoppingListRepository.delete(groceriesAfterPost);
     }).should.be.fulfilled.then(groceriesAfterDelete => {
       groceriesAfterDelete.should.be.an.instanceof(Record);
       groceriesAfterDelete._id.should.be.a("string")
@@ -137,7 +134,7 @@ describe("a Shopping List Repository for PouchDB", function() {
       groceriesAfterDelete.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
       groceriesAfterDelete.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
       clock.restore();
-      return shoppingListRepository.get(idAfterPost).should.be.rejectedWith(Error);
+      return this.shoppingListRepository.get(idAfterPost).should.be.rejectedWith(Error);
     }).should.notify(done);
   });
 
@@ -145,11 +142,11 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
-      return shoppingListRepository.postItem(mangos);
+      return this.shoppingListRepository.postItem(mangos);
     }).should.be.fulfilled.then(mangosAfterPost => {
       mangosAfterPost.should.be.an.instanceof(Record);
       mangosAfterPost._id.should.be.a("string")
@@ -175,7 +172,7 @@ describe("a Shopping List Repository for PouchDB", function() {
     let mangos;
     let oranges;
     let pears;
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       clock = sinon.useFakeTimers(1504060809314);
       mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
@@ -186,7 +183,7 @@ describe("a Shopping List Repository for PouchDB", function() {
       pears = this.shoppingListFactory.newShoppingListItem({
         title: "Pears"
       }, groceries);
-      return shoppingListRepository.postItemsBulk([mangos, oranges, pears]);
+      return this.shoppingListRepository.postItemsBulk([mangos, oranges, pears]);
     }).should.be.fulfilled.then(groceriesItemList => {
       List.isList(groceriesItemList).should.be.true;
       groceriesItemList.isEmpty().should.be.false;
@@ -227,14 +224,14 @@ describe("a Shopping List Repository for PouchDB", function() {
       title: "Groceries"
     });
     let revAfterPost;
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
-      return shoppingListRepository.postItem(mangos);
+      return this.shoppingListRepository.postItem(mangos);
     }).should.be.fulfilled.then(mangosAfterPost => {
       revAfterPost = mangosAfterPost._rev;
-      return shoppingListRepository.getItem(mangosAfterPost._id);
+      return this.shoppingListRepository.getItem(mangosAfterPost._id);
     }).should.be.fulfilled.then(mangosAfterGet => {
       mangosAfterGet.should.be.an.instanceof(Record);
       mangosAfterGet._id.should.be.a("string")
@@ -257,16 +254,16 @@ describe("a Shopping List Repository for PouchDB", function() {
     });
     let revAfterPost;
     let clock;
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
-      return shoppingListRepository.postItem(mangos);
+      return this.shoppingListRepository.postItem(mangos);
     }).should.be.fulfilled.then(mangosAfterPost => {
       revAfterPost = mangosAfterPost._rev;
       const mangosAfterPostUpdated = mangosAfterPost.set("checked", true);
       clock = sinon.useFakeTimers(1504060809314);
-      return shoppingListRepository.putItem(mangosAfterPostUpdated);
+      return this.shoppingListRepository.putItem(mangosAfterPostUpdated);
     }).should.be.fulfilled.then(mangosAfterPut => {
       mangosAfterPut.should.be.an.instanceof(Record);
       mangosAfterPut._id.should.be.a("string")
@@ -291,16 +288,16 @@ describe("a Shopping List Repository for PouchDB", function() {
     let idAfterPost;
     let revAfterPost;
     let clock;
-    shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
       const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
-      return shoppingListRepository.postItem(mangos);
+      return this.shoppingListRepository.postItem(mangos);
     }).should.be.fulfilled.then(mangosAfterPost => {
       idAfterPost = mangosAfterPost._id;
       revAfterPost = mangosAfterPost._rev;
       clock = sinon.useFakeTimers(1504060809314);
-      return shoppingListRepository.deleteItem(mangosAfterPost);
+      return this.shoppingListRepository.deleteItem(mangosAfterPost);
     }).should.be.fulfilled.then(mangosAfterDelete => {
       mangosAfterDelete.should.be.an.instanceof(Record);
       mangosAfterDelete._id.should.be.a("string")
@@ -316,7 +313,7 @@ describe("a Shopping List Repository for PouchDB", function() {
       mangosAfterDelete.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
       mangosAfterDelete.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
       clock.restore();
-      return shoppingListRepository.getItem(idAfterPost).should.be.rejectedWith(Error);
+      return this.shoppingListRepository.getItem(idAfterPost).should.be.rejectedWith(Error);
     }).should.notify(done);
   });
 
