@@ -6,6 +6,7 @@ chai.use(require("chai-immutable"));
 chai.use(require("chai-as-promised"));
 const sinon = require("sinon");
 const PouchDB = require("pouchdb-memory");
+PouchDB.plugin(require("pouchdb-find"));
 
 const { ShoppingListFactory } = require("../src/ShoppingListFactory");
 const { ShoppingListRepositoryPouchDB } = require("../src/ShoppingListRepositoryPouchDB");
@@ -319,7 +320,63 @@ describe("a Shopping List Repository for PouchDB", function() {
   });
 
   it("should read a Shopping List Item List", function(done) {
-    this.skip();
+    const groceries = this.shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    let clock;
+    let mangos;
+    let oranges;
+    let pears;
+    this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
+      return this.shoppingListRepository.post(groceries);
+    }).should.be.fulfilled.then(groceriesAfterPost => {
+      clock = sinon.useFakeTimers(1504060809314);
+      mangos = this.shoppingListFactory.newShoppingListItem({
+        title: "Mangos"
+      }, groceries);
+      oranges = this.shoppingListFactory.newShoppingListItem({
+        title: "Oranges"
+      }, groceries);
+      pears = this.shoppingListFactory.newShoppingListItem({
+        title: "Pears"
+      }, groceries);
+      const groceriesItemList = this.shoppingListFactory.newShoppingListItemList([mangos, oranges, pears]);
+      return this.shoppingListRepository.postItemsBulk(groceriesItemList);
+    }).should.be.fulfilled.then(groceriesItemList => {
+      return this.shoppingListRepository.getItemList(groceries._id);
+    }).should.be.fulfilled.then(groceriesItemList => {
+      List.isList(groceriesItemList).should.be.true;
+      groceriesItemList.isEmpty().should.be.false;
+      groceriesItemList.size.should.equal(3);
+      const mangosAfterPost = groceriesItemList.get(0);
+      const orangesAfterPost = groceriesItemList.get(1);
+      const pearsAfterPost = groceriesItemList.get(2);
+      mangosAfterPost.should.have.deep.property("_id", mangos._id);
+      mangosAfterPost.should.have.deep.property("_rev").that.is.a("string");
+      mangosAfterPost.should.have.deep.property("type", "item");
+      mangosAfterPost.should.have.deep.property("list", groceries._id);
+      mangosAfterPost.should.have.deep.property("title", "Mangos");
+      mangosAfterPost.should.have.deep.property("checked", false);
+      mangosAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      mangosAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      orangesAfterPost.should.have.deep.property("_id", oranges._id);
+      orangesAfterPost.should.have.deep.property("_rev").that.is.a("string");
+      orangesAfterPost.should.have.deep.property("type", "item");
+      orangesAfterPost.should.have.deep.property("list", groceries._id);
+      orangesAfterPost.should.have.deep.property("title", "Oranges");
+      orangesAfterPost.should.have.deep.property("checked", false);
+      orangesAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      orangesAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      pearsAfterPost.should.have.deep.property("_id", pears._id);
+      pearsAfterPost.should.have.deep.property("_rev").that.is.a("string");
+      pearsAfterPost.should.have.deep.property("type", "item");
+      pearsAfterPost.should.have.deep.property("list", groceries._id);
+      pearsAfterPost.should.have.deep.property("title", "Pears");
+      pearsAfterPost.should.have.deep.property("checked", false);
+      pearsAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      pearsAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      clock.restore();
+    }).should.notify(done);
   });
 
 });

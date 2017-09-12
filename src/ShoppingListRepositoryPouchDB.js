@@ -73,6 +73,20 @@ exports.ShoppingListRepositoryPouchDB = class extends ShoppingListRepository {
     });
   }
 
+  _ensureItemListIndex() {
+    return this.db.createIndex({
+      index: {
+        fields: ["type", "list"]
+      }
+    });
+  }
+
+  ensureIndexes() {
+    return Promise.all([
+      this._ensureItemListIndex()
+    ]);
+  }
+
   post(shoppingList) {
     this._guardShoppingList(shoppingList);
     return this._post(shoppingList);
@@ -127,6 +141,20 @@ exports.ShoppingListRepositoryPouchDB = class extends ShoppingListRepository {
   deleteItem(shoppingListItem) {
     this._guardShoppingListItem(shoppingListItem);
     return this._delete(shoppingListItem);
+  }
+
+  getItemList(shoppingListId) {
+    return this.db.find({
+      selector: {
+        type: "item",
+        list: shoppingListId
+      }
+    }).then(result => {
+      if (result.warning) {
+        console.warn(result.warning);
+      }
+      return this._shoppingListFactory.newShoppingListItemList(result.docs);
+    });
   }
 
 }
