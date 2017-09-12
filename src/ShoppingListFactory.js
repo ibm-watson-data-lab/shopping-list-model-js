@@ -4,7 +4,7 @@ const cuid = require("cuid");
 
 const { Record, List } = require("immutable");
 
-module.exports.ShoppingListFactory = class {
+class ShoppingListFactory {
 
   constructor() {
     this._ShoppingList = Record({
@@ -69,3 +69,5 @@ module.exports.ShoppingListFactory = class {
   }
 
 }
+
+exports.ShoppingListFactory = ShoppingListFactory;
