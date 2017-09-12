@@ -1,6 +1,6 @@
 "use strict";
 
-exports.ShoppingListRepository = class {
+module.exports.ShoppingListRepository = class {
 
   post(shoppingList) { }
 

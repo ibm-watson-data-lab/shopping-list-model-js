@@ -3,7 +3,7 @@
 const { ShoppingListRepository } = require("./ShoppingListRepository");
 const { ShoppingListFactory } = require("./ShoppingListFactory");
 
-exports.ShoppingListRepositoryPouchDB = class extends ShoppingListRepository {
+module.exports.ShoppingListRepositoryPouchDB = class extends ShoppingListRepository {
 
   constructor(db) {
     super();
