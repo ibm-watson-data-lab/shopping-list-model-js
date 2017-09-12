@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ibm-watson-data-lab/shopping-list-model-js.svg?branch=master)](https://travis-ci.org/ibm-watson-data-lab/shopping-list-model-js)
+
 # Shopping List Domain Model
 
 **Note:** This is a work in progress.
