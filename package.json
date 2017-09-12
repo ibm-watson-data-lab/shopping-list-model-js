@@ -13,7 +13,10 @@
   },
   "keywords": [
     "offline-first",
-    "pwa"
+    "pwa",
+    "PouchDB",
+    "CouchDB",
+    "Cloudant"
   ],
   "author": "Bradley Holt <bradley.holt@us.ibm.com> (https://www.npmjs.com/~bradley-holt)",
   "license": "Apache-2.0",
