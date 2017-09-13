@@ -4,6 +4,7 @@ const chai = require("chai");
 const should = chai.should();
 chai.use(require("chai-immutable"));
 chai.use(require("chai-as-promised"));
+chai.use(require("chai-string"));
 const sinon = require("sinon");
 const PouchDB = require("pouchdb-memory");
 PouchDB.plugin(require("pouchdb-find"));
