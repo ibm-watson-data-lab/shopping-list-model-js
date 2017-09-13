@@ -1,12 +1,14 @@
 "use strict";
 
-const cuid = require("cuid");
-
 const { Record, List } = require("immutable");
 
 class ShoppingListFactory {
 
-  constructor() {
+  constructor(cuid) {
+    this.cuid = cuid;
+    if (!this.cuid) {
+      this.cuid = require("cuid");
+    }
     this._ShoppingList = Record({
       _id: undefined,
       _rev: undefined,
@@ -46,7 +48,7 @@ class ShoppingListFactory {
   newShoppingList(values) {
     let shoppingList = new this._ShoppingList(values);
     if (shoppingList._id === undefined) {
-      shoppingList = shoppingList.set("_id", "list:" + cuid());
+      shoppingList = shoppingList.set("_id", "list:" + this.cuid());
     }
     return shoppingList;
   }
@@ -54,7 +56,7 @@ class ShoppingListFactory {
   newShoppingListItem(values, shoppingList) {
     let shoppingListItem = new this._ShoppingListItem(values);
     if (shoppingListItem._id === undefined) {
-      shoppingListItem = shoppingListItem.set("_id", "item:" + cuid());
+      shoppingListItem = shoppingListItem.set("_id", "item:" + this.cuid());
     }
     if (shoppingListItem.list === undefined && shoppingList) {
       shoppingListItem = shoppingListItem.set("list", shoppingList._id);
