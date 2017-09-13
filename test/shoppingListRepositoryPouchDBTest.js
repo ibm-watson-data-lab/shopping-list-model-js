@@ -26,7 +26,7 @@ describe("a Shopping List Repository for PouchDB", function() {
   });
 
   afterEach(function() {
-    this.db.destroy();
+    return this.db.destroy();
   });
 
   after(function() {
