@@ -7,6 +7,8 @@
     "test-mocha": "mocha",
     "test-karma": "karma start --single-run --browsers ChromeHeadless",
     "test": "npm run test-mocha && npm run test-karma",
+    "posttest": "npm run eslint",
+    "eslint": "eslint src/ test/",
     "repl": "node repl.js",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
@@ -37,6 +39,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-immutable": "^1.6.0",
     "chai-string": "^1.4.0",
+    "eslint": "^4.6.1",
     "karma": "^1.7.1",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
