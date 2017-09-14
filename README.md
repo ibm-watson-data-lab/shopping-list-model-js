@@ -68,7 +68,7 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
 
 #### Reading a Shopping List from a Database
 
-Use a Shopping List Repository to read a Shopping List from the database when you know the `_id` value:
+Use a Shopping List Repository to read a Shopping List from a database when you know the `_id` value:
 
 ```javascript
 const { ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
@@ -222,7 +222,7 @@ shoppingListRepository.post(shoppingList).then(shoppingList => {
 
 #### Reading a Shopping List Item from a Database
 
-Use a Shopping List Repository to read a Shopping List Item from the database when you know the `_id` value:
+Use a Shopping List Repository to read a Shopping List Item from a database when you know the `_id` value:
 
 ```javascript
 const { ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
@@ -409,7 +409,7 @@ console.log(groceriesItemList.get(1).title);    // Pears
 
 #### Find a List of Shopping List Items for a Shopping List from a Database
 
-Use a Shopping List Repository to find a List of Shopping List Items from the database when you know the `_id` value of the parent Shopping List:
+Use a Shopping List Repository to find a List of Shopping List Items from a database when you know the `_id` value of the parent Shopping List:
 
 ```javascript
 const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
