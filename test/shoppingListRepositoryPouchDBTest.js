@@ -79,6 +79,43 @@ describe("a Shopping List Repository for PouchDB", function() {
     }).should.notify(done);
   });
 
+  it("should find a List of Shopping Lists", function(done) {
+    const groceries = this.shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    const campingSupplies = this.shoppingListFactory.newShoppingList({
+      title: "Camping Supplies"
+    });
+    const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
+    this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
+      return this.shoppingListRepository.postBulk(listOfShoppingLists);
+    }).should.be.fulfilled.then(listOfShoppingListsAfterPost => {
+      return this.shoppingListRepository.find();
+    }).should.be.fulfilled.then(listOfShoppingListsAfterFind => {
+      List.isList(listOfShoppingListsAfterFind).should.be.true;
+      listOfShoppingListsAfterFind.isEmpty().should.be.false;
+      listOfShoppingListsAfterFind.size.should.equal(2);
+      const groceriesAfterFind = listOfShoppingListsAfterFind.get(0);
+      const campingSuppliesAfterFind = listOfShoppingListsAfterFind.get(1);
+      groceriesAfterFind.should.have.deep.property("_id", groceries._id);
+      groceriesAfterFind.should.have.deep.property("_rev").that.is.a("string");
+      groceriesAfterFind.should.have.deep.property("type", "list");
+      groceriesAfterFind.should.have.deep.property("title", "Groceries");
+      groceriesAfterFind.should.have.deep.property("checked", false);
+      groceriesAfterFind.should.have.deep.property("place", undefined);
+      groceriesAfterFind.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
+      groceriesAfterFind.should.have.deep.property("updatedAt", "2017-08-30T02:40:08.000Z");
+      campingSuppliesAfterFind.should.have.deep.property("_id", campingSupplies._id);
+      campingSuppliesAfterFind.should.have.deep.property("_rev").that.is.a("string");
+      campingSuppliesAfterFind.should.have.deep.property("type", "list");
+      campingSuppliesAfterFind.should.have.deep.property("title", "Camping Supplies");
+      campingSuppliesAfterFind.should.have.deep.property("checked", false);
+      campingSuppliesAfterFind.should.have.deep.property("place", undefined);
+      campingSuppliesAfterFind.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
+      campingSuppliesAfterFind.should.have.deep.property("updatedAt", "2017-08-30T02:40:08.000Z");
+    }).should.notify(done);
+  });
+
   it("should update a Shopping List", function(done) {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"

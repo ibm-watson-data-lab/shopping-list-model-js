@@ -80,7 +80,15 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     });
   }
 
-  _ensureItemListIndex() {
+  _ensureIndexOfType() {
+    return this.db.createIndex({
+      index: {
+        fields: ["type"]
+      }
+    });
+  }
+
+  _ensureIndexOfTypeAndList() {
     return this.db.createIndex({
       index: {
         fields: ["type", "list"]
@@ -90,13 +98,24 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
 
   ensureIndexes() {
     return Promise.all([
-      this._ensureItemListIndex()
+      this._ensureIndexOfType(),
+      this._ensureIndexOfTypeAndList()
     ]);
   }
 
   post(shoppingList) {
     this._guardShoppingList(shoppingList);
     return this._post(shoppingList);
+  }
+
+  postBulk(shoppingLists) {
+    let postedLists = [];
+    shoppingLists.forEach(shoppingList => {
+      postedLists.push(this.post(shoppingList));
+    });
+    return Promise.all(postedLists).then(shoppingLists => {
+      return this._shoppingListFactory.newListOfShoppingLists(shoppingLists);
+    });
   }
 
   put(shoppingList) {
@@ -109,6 +128,23 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
       const shoppingList = this._shoppingListFactory.newShoppingList(doc);
       this._guardShoppingList(shoppingList);
       return shoppingList;
+    });
+  }
+
+  find() {
+    return this.db.find({
+      selector: {
+        type: "list"
+      }
+    }).then(result => {
+      if (result.warning) {
+        console.warn(result.warning);
+      }
+      let listOfShoppingLists = this._shoppingListFactory.newListOfShoppingLists();
+      result.docs.forEach(doc => {
+        listOfShoppingLists = listOfShoppingLists.push(this._shoppingListFactory.newShoppingList(doc));
+      });
+      return listOfShoppingLists;
     });
   }
 

@@ -4,9 +4,13 @@ class ShoppingListRepository {
 
   post(shoppingList) { }
 
+  postBulk(shoppingLists) { }
+
   put(shoppingList) { }
 
   get(shoppingListId) { }
+
+  find() {}
 
   delete(shoppingList) { }
 
