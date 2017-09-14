@@ -353,6 +353,170 @@ describe("a Shopping List Repository for PouchDB", function() {
     }).should.notify(done);
   });
 
+  it("should find the count of Shopping List Items for a Shopping List", function(done) {
+    const groceries = this.shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    let mangos;
+    let oranges;
+    let pears;
+    this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
+      return this.shoppingListRepository.post(groceries);
+    }).should.be.fulfilled.then(groceriesAfterPost => {
+      mangos = this.shoppingListFactory.newShoppingListItem({
+        title: "Mangos"
+      }, groceries);
+      oranges = this.shoppingListFactory.newShoppingListItem({
+        title: "Oranges"
+      }, groceries);
+      pears = this.shoppingListFactory.newShoppingListItem({
+        title: "Pears"
+      }, groceries);
+      const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
+      return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
+      return this.shoppingListRepository.findItemsCountByList({
+        selector: {
+          type: "item",
+          list: groceries._id
+        },
+        fields: [ "list" ]
+      });
+    }).should.be.fulfilled.then(groceriesItemsCount => {
+      groceriesItemsCount.get(groceries._id).should.equal(3);
+    }).should.notify(done);
+  });
+
+  it("should find the count of checked Shopping List Items for a Shopping List", function(done) {
+    const groceries = this.shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    let mangos;
+    let oranges;
+    let pears;
+    this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
+      return this.shoppingListRepository.post(groceries);
+    }).should.be.fulfilled.then(groceriesAfterPost => {
+      mangos = this.shoppingListFactory.newShoppingListItem({
+        title: "Mangos",
+        checked: true,
+      }, groceries);
+      oranges = this.shoppingListFactory.newShoppingListItem({
+        title: "Oranges",
+        checked: true
+      }, groceries);
+      pears = this.shoppingListFactory.newShoppingListItem({
+        title: "Pears"
+      }, groceries);
+      const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
+      return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
+      return this.shoppingListRepository.findItemsCountByList({
+        selector: {
+          type: "item",
+          list: groceries._id,
+          checked: true
+        },
+        fields: [ "list" ]
+      });
+    }).should.be.fulfilled.then(groceriesItemsCheckedCount => {
+      groceriesItemsCheckedCount.get(groceries._id).should.equal(2);
+    }).should.notify(done);
+  });
+
+  it("should find the count of Shopping List Items by Shopping List", function(done) {
+    const groceries = this.shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    let mangos;
+    let oranges;
+    let pears;
+    const campingSupplies = this.shoppingListFactory.newShoppingList({
+      title: "Camping Supplies"
+    });
+    let carabiners;
+    let socks;
+    const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
+    this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
+      return this.shoppingListRepository.postBulk(listOfShoppingLists);
+    }).should.be.fulfilled.then(groceriesAfterPost => {
+      mangos = this.shoppingListFactory.newShoppingListItem({
+        title: "Mangos"
+      }, groceries);
+      oranges = this.shoppingListFactory.newShoppingListItem({
+        title: "Oranges"
+      }, groceries);
+      pears = this.shoppingListFactory.newShoppingListItem({
+        title: "Pears"
+      }, groceries);
+      carabiners = this.shoppingListFactory.newShoppingListItem({
+        title: "Carabiners"
+      }, campingSupplies);
+      socks = this.shoppingListFactory.newShoppingListItem({
+        title: "Socks"
+      }, campingSupplies);
+      const listOfListItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears, carabiners, socks]);
+      return this.shoppingListRepository.postItemsBulk(listOfListItems);
+    }).should.be.fulfilled.then(listOfListItemsAfterPost => {
+      return this.shoppingListRepository.findItemsCountByList();
+    }).should.be.fulfilled.then(listItemsCount => {
+      listItemsCount.size.should.equal(2);
+      listItemsCount.get(groceries._id).should.equal(3);
+      listItemsCount.get(campingSupplies._id).should.equal(2);
+    }).should.notify(done);
+  });
+
+  it("should find the count of checked Shopping List Items by Shopping List", function(done) {
+    const groceries = this.shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    let mangos;
+    let oranges;
+    let pears;
+    const campingSupplies = this.shoppingListFactory.newShoppingList({
+      title: "Camping Supplies"
+    });
+    let carabiners;
+    let socks;
+    const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
+    this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
+      return this.shoppingListRepository.postBulk(listOfShoppingLists);
+    }).should.be.fulfilled.then(groceriesAfterPost => {
+      mangos = this.shoppingListFactory.newShoppingListItem({
+        title: "Mangos",
+        checked: true
+      }, groceries);
+      oranges = this.shoppingListFactory.newShoppingListItem({
+        title: "Oranges",
+        checked: true
+      }, groceries);
+      pears = this.shoppingListFactory.newShoppingListItem({
+        title: "Pears"
+      }, groceries);
+      carabiners = this.shoppingListFactory.newShoppingListItem({
+        title: "Carabiners",
+        checked: true
+      }, campingSupplies);
+      socks = this.shoppingListFactory.newShoppingListItem({
+        title: "Socks"
+      }, campingSupplies);
+      const listOfListItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears, carabiners, socks]);
+      return this.shoppingListRepository.postItemsBulk(listOfListItems);
+    }).should.be.fulfilled.then(listOfListItemsAfterPost => {
+      return this.shoppingListRepository.findItemsCountByList({
+        selector: {
+          type: "item",
+          checked: true
+        },
+        fields: [ "list" ]
+      });
+    }).should.be.fulfilled.then(listItemsCount => {
+      listItemsCount.size.should.equal(2);
+      listItemsCount.get(groceries._id).should.equal(2);
+      listItemsCount.get(campingSupplies._id).should.equal(1);
+    }).should.notify(done);
+  });
+
   it("should update a Shopping List Item", function(done) {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"

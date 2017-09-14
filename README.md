@@ -324,6 +324,240 @@ shoppingListRepository.ensureIndexes().then(result => {
 });
 ```
 
+#### Finding a Count of Shopping List Items for a Shopping List from a Database
+
+Use a Shopping List Repository to find a count of Shopping List Items from a database when you know the `_id` value of the parent Shopping List:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
+const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
+  title: "Oranges"
+}, shoppingList);
+let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
+  title: "Pears"
+}, shoppingList);
+
+let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
+  shoppingListItem01,
+  shoppingListItem02,
+  shoppingListItem03
+]);
+
+shoppingListRepository.ensureIndexes().then(result => {
+  return shoppingListRepository.post(shoppingList);
+}).then(shoppingList => {
+  return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+}).then(listOfGroceriesItems => {
+  return shoppingListRepository.findItemsCountByList({
+    selector: {
+      type: "item",
+      list: shoppingList._id
+    },
+    fields: [ "list" ]
+  });
+}).then(itemsCount => {
+  console.log(itemsCount.get(shoppingList._id));    // 3
+});
+```
+
+#### Finding a Count of Checked Shopping List Items for a Shopping List from a Database
+
+Use a Shopping List Repository to find a count of checked Shopping List Items from a database when you know the `_id` value of the parent Shopping List:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
+const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
+  title: "Mangos",
+  checked: true
+}, shoppingList);
+let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
+  title: "Oranges",
+  checked: true
+}, shoppingList);
+let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
+  title: "Pears"
+}, shoppingList);
+
+let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
+  shoppingListItem01,
+  shoppingListItem02,
+  shoppingListItem03
+]);
+
+shoppingListRepository.ensureIndexes().then(result => {
+  return shoppingListRepository.post(shoppingList);
+}).then(shoppingList => {
+  return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+}).then(listOfGroceriesItems => {
+  return shoppingListRepository.findItemsCountByList({
+    selector: {
+      type: "item",
+      list: shoppingList._id,
+      checked: true
+    },
+    fields: [ "list" ]
+  });
+}).then(itemsCount => {
+  console.log(itemsCount.get(shoppingList._id));    // 2
+});
+```
+
+#### Finding a Count of Shopping List Items by Shopping List from a Database
+
+Use a Shopping List Repository to find a count of Shopping List Items by Shopping List from a database:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
+const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList01 = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+let shoppingList02 = shoppingListFactory.newShoppingList({
+  title: "Camping Supplies"
+});
+
+let listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([
+  shoppingList01,
+  shoppingList02
+]);
+
+let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList01);
+let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
+  title: "Oranges"
+}, shoppingList01);
+let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
+  title: "Pears"
+}, shoppingList01);
+let shoppingListItem04 = shoppingListFactory.newShoppingListItem({
+  title: "Carabiners"
+}, shoppingList02);
+let shoppingListItem05 = shoppingListFactory.newShoppingListItem({
+  title: "Socks"
+}, shoppingList02);
+
+let listOfShoppingListItems = shoppingListFactory.newListOfShoppingListItems([
+  shoppingListItem01,
+  shoppingListItem02,
+  shoppingListItem03,
+  shoppingListItem04,
+  shoppingListItem05
+]);
+
+shoppingListRepository.ensureIndexes().then(result => {
+  return shoppingListRepository.postBulk(listOfShoppingLists);
+}).then(listOfShoppingLists => {
+  return shoppingListRepository.postItemsBulk(listOfShoppingListItems);
+}).then(listOfShoppingListItems => {
+  return shoppingListRepository.findItemsCountByList();
+}).then(itemsCount => {
+  console.log(itemsCount.get(shoppingList01._id));  // 3
+  console.log(itemsCount.get(shoppingList02._id));  // 2
+});
+```
+
+#### Finding a Count of Checked Shopping List Items by Shopping List from a Database
+
+Use a Shopping List Repository to find a count of checked Shopping List Items by Shopping List from a database:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
+const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList01 = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+let shoppingList02 = shoppingListFactory.newShoppingList({
+  title: "Camping Supplies"
+});
+
+let listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([
+  shoppingList01,
+  shoppingList02
+]);
+
+let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
+  title: "Mangos",
+  checked: true
+}, shoppingList01);
+let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
+  title: "Oranges",
+  checked: true
+}, shoppingList01);
+let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
+  title: "Pears"
+}, shoppingList01);
+let shoppingListItem04 = shoppingListFactory.newShoppingListItem({
+  title: "Carabiners",
+  checked: true
+}, shoppingList02);
+let shoppingListItem05 = shoppingListFactory.newShoppingListItem({
+  title: "Socks"
+}, shoppingList02);
+
+let listOfShoppingListItems = shoppingListFactory.newListOfShoppingListItems([
+  shoppingListItem01,
+  shoppingListItem02,
+  shoppingListItem03,
+  shoppingListItem04,
+  shoppingListItem05
+]);
+
+shoppingListRepository.ensureIndexes().then(result => {
+  return shoppingListRepository.postBulk(listOfShoppingLists);
+}).then(listOfShoppingLists => {
+  return shoppingListRepository.postItemsBulk(listOfShoppingListItems);
+}).then(listOfShoppingListItems => {
+  return shoppingListRepository.findItemsCountByList({
+    selector: {
+      type: "item",
+      checked: true
+    },
+    fields: [ "list" ]
+  });
+}).then(itemsCount => {
+  console.log(itemsCount.get(shoppingList01._id));  // 2
+  console.log(itemsCount.get(shoppingList02._id));  // 1
+});
+```
+
 #### Modifying a Shopping List Item
 
 Shopping List Items are [Immutable.js Record](https://facebook.github.io/immutable-js/docs/#/Record) objects. Use the `set` method or the `mergeDeep` method to make a modified copy of a Shopping List Item:

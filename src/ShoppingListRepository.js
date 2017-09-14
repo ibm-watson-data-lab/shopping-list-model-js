@@ -24,6 +24,8 @@ class ShoppingListRepository {
 
   findItems(request) {}
 
+  findItemsCountByList(request) {}
+
   deleteItem(shoppingListItem) { }
 
 }

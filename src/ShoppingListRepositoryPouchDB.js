@@ -122,10 +122,28 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     });
   }
 
+  _ensureIndexOfTypeAndChecked() {
+    return this.db.createIndex({
+      index: {
+        fields: ["type", "checked"]
+      }
+    });
+  }
+
+  _ensureIndexOfTypeAndListAndChecked() {
+    return this.db.createIndex({
+      index: {
+        fields: ["type", "list", "checked"]
+      }
+    });
+  }
+
   ensureIndexes() {
     return Promise.all([
       this._ensureIndexOfType(),
-      this._ensureIndexOfTypeAndList()
+      this._ensureIndexOfTypeAndList(),
+      this._ensureIndexOfTypeAndChecked(),
+      this._ensureIndexOfTypeAndListAndChecked()
     ]);
   }
 
@@ -215,6 +233,17 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
         listOfShoppingListItems = listOfShoppingListItems.push(this._shoppingListFactory.newShoppingListItem(doc));
       });
       return listOfShoppingListItems;
+    });
+  }
+
+  findItemsCountByList(request = { selector: { type: "item" }, fields: [ "list" ] }) {
+    if (request.fields && !request.fields.includes("list")) {
+      throw new Error("Request selector must have a fields property that includes a value of 'list'");
+    }
+    return this.findItems(request).then(listOfShoppingListItems => {
+      return listOfShoppingListItems.countBy(shoppingListItem => {
+        return shoppingListItem.list;
+      });
     });
   }
 
