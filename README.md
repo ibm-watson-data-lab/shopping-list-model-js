@@ -85,6 +85,41 @@ shoppingListRepository.get("list:cj6mj1zfj000001n1ugjfkj33").then(shoppingList =
 });
 ```
 
+#### Find a List of Shopping Lists from a Database
+
+Use a Shopping List Repository to find a List of Shopping Lists from a database:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
+const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList01 = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+let shoppingList02 = shoppingListFactory.newShoppingList({
+  title: "Camping Supplies"
+});
+
+let listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([
+  shoppingList01,
+  shoppingList02
+]);
+
+shoppingListRepository.ensureIndexes().then(result => {
+  return shoppingListRepository.postBulk(listOfShoppingLists);
+}).then(listOfShoppingLists => {
+  return shoppingListRepository.find(listOfShoppingLists);
+}).then(listOfShoppingLists => {
+  console.log(listOfShoppingLists.get(0).title);  // Groceries
+  console.log(listOfShoppingLists.get(1).title);  // Camping Supplies
+});
+```
+
 #### Modifying a Shopping List
 
 Shopping Lists are [Immutable.js Record](https://facebook.github.io/immutable-js/docs/#/Record) objects. Use the `set` method or the `mergeDeep` method to make a modified copy of a Shopping List:
