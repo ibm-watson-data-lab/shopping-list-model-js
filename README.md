@@ -443,9 +443,9 @@ console.log(listOfGroceriesItems.get(0).title);   // Mangos
 console.log(listOfGroceriesItems.get(1).title);   // Oranges
 ```
 
-#### Modifying a Shopping List Item List
+#### Modifying a List of Shopping List Items
 
-Shopping List Item Lists are [Immutable.js Lists](https://facebook.github.io/immutable-js/docs/#/List) objects. Use the `push` method, the `delete` method, or other persistent change List methods to make a modified copy of a Shopping List Item List:
+Lists of Shopping List Item are [Immutable.js Lists](https://facebook.github.io/immutable-js/docs/#/List) objects. Use the `push` method, the `delete` method, or other persistent change List methods to make a modified copy of a Shopping List Item List:
 
 ```javascript
 const { ShoppingListFactory } = require("ibm-shopping-list-model");
