@@ -39,7 +39,7 @@ class ShoppingListFactory {
     }
   }
 
-  _guardShoppingListItemList(listOfShoppingListItems) {
+  _guardListOfShoppingListItems(listOfShoppingListItems) {
     listOfShoppingListItems.forEach(shoppingListItem => this._guardShoppingListItem(shoppingListItem));
   }
 
@@ -64,7 +64,7 @@ class ShoppingListFactory {
 
   newListOfShoppingListItems(shoppingListItems) {
     let listOfShoppingListItems = new List(shoppingListItems);
-    this._guardShoppingListItemList(listOfShoppingListItems);
+    this._guardListOfShoppingListItems(listOfShoppingListItems);
     return listOfShoppingListItems;
   }
 
