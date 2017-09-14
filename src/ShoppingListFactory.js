@@ -39,8 +39,8 @@ class ShoppingListFactory {
     }
   }
 
-  _guardShoppingListItemList(shoppingListItemList) {
-    shoppingListItemList.forEach(shoppingListItem => this._guardShoppingListItem(shoppingListItem));
+  _guardShoppingListItemList(listOfShoppingListItems) {
+    listOfShoppingListItems.forEach(shoppingListItem => this._guardShoppingListItem(shoppingListItem));
   }
 
   newShoppingList(values) {
@@ -62,10 +62,10 @@ class ShoppingListFactory {
     return shoppingListItem;
   }
 
-  newShoppingListItemList(shoppingListItems) {
-    let shoppingListItemList = new List(shoppingListItems);
-    this._guardShoppingListItemList(shoppingListItemList);
-    return shoppingListItemList;
+  newListOfShoppingListItems(shoppingListItems) {
+    let listOfShoppingListItems = new List(shoppingListItems);
+    this._guardShoppingListItemList(listOfShoppingListItems);
+    return listOfShoppingListItems;
   }
 
 }

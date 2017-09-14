@@ -92,10 +92,10 @@ describe("a Shopping List Factory", function() {
   });
 
   it("should make a new List of Shopping List Items that is empty", function() {
-    const shoppingListItemList = shoppingListFactory.newShoppingListItemList();
-    List.isList(shoppingListItemList).should.be.true;
-    shoppingListItemList.isEmpty().should.be.true;
-    shoppingListItemList.size.should.equal(0);
+    const listOfshoppingListItems = shoppingListFactory.newListOfShoppingListItems();
+    List.isList(listOfshoppingListItems).should.be.true;
+    listOfshoppingListItems.isEmpty().should.be.true;
+    listOfshoppingListItems.size.should.equal(0);
   });
 
   it("should make a new List of Shopping List Items that includes one Shopping List Item", function() {
@@ -105,11 +105,11 @@ describe("a Shopping List Factory", function() {
     const mangos = shoppingListFactory.newShoppingListItem({
       title: "Mangos"
     }, groceries);
-    const groceriesItemList = shoppingListFactory.newShoppingListItemList([mangos]);
-    List.isList(groceriesItemList).should.be.true;
-    groceriesItemList.isEmpty().should.be.false;
-    groceriesItemList.size.should.equal(1);
-    groceriesItemList.includes(mangos).should.be.true;
+    const listOfgroceriesItems = shoppingListFactory.newListOfShoppingListItems([mangos]);
+    List.isList(listOfgroceriesItems).should.be.true;
+    listOfgroceriesItems.isEmpty().should.be.false;
+    listOfgroceriesItems.size.should.equal(1);
+    listOfgroceriesItems.includes(mangos).should.be.true;
   });
 
   it("should make a new List of Shopping List Items that includes two Shopping List Items", function() {
@@ -122,14 +122,14 @@ describe("a Shopping List Factory", function() {
     const oranges = shoppingListFactory.newShoppingListItem({
       title: "Oranges"
     }, groceries);
-    const groceriesItemList = shoppingListFactory.newShoppingListItemList([mangos, oranges]);
-    List.isList(groceriesItemList).should.be.true;
-    groceriesItemList.isEmpty().should.be.false;
-    groceriesItemList.size.should.equal(2);
-    groceriesItemList.includes(mangos).should.be.true;
-    groceriesItemList.includes(oranges).should.be.true;
-    groceriesItemList.first().equals(mangos).should.be.true;
-    groceriesItemList.last().equals(oranges).should.be.true;
+    const listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([mangos, oranges]);
+    List.isList(listOfGroceriesItems).should.be.true;
+    listOfGroceriesItems.isEmpty().should.be.false;
+    listOfGroceriesItems.size.should.equal(2);
+    listOfGroceriesItems.includes(mangos).should.be.true;
+    listOfGroceriesItems.includes(oranges).should.be.true;
+    listOfGroceriesItems.first().equals(mangos).should.be.true;
+    listOfGroceriesItems.last().equals(oranges).should.be.true;
   });
 
 });

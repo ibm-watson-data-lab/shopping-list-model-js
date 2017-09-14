@@ -354,7 +354,7 @@ let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
   title: "Oranges"
 }, shoppingList);
 
-let groceriesItemList = shoppingListFactory.newShoppingListItemList([
+let groceriesItemList = shoppingListFactory.newListOfShoppingListItems([
   shoppingListItem01,
   shoppingListItem02
 ]);
@@ -383,7 +383,7 @@ let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
   title: "Oranges"
 }, shoppingList);
 
-let groceriesItemList = shoppingListFactory.newShoppingListItemList([
+let groceriesItemList = shoppingListFactory.newListOfShoppingListItems([
   shoppingListItem01,
   shoppingListItem02
 ]);
@@ -434,7 +434,7 @@ let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
   title: "Pears"
 }, shoppingList);
 
-let groceriesItemList = shoppingListFactory.newShoppingListItemList([
+let groceriesItemList = shoppingListFactory.newListOfShoppingListItems([
   shoppingListItem01,
   shoppingListItem02,
   shoppingListItem03

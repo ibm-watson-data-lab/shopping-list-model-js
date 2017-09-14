@@ -121,7 +121,7 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
       postedItems.push(this.postItem(shoppingListItem));
     });
     return Promise.all(postedItems).then(shoppingListItems => {
-      return this._shoppingListFactory.newShoppingListItemList(shoppingListItems);
+      return this._shoppingListFactory.newListOfShoppingListItems(shoppingListItems);
     });
   }
 
@@ -148,7 +148,7 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
       if (result.warning) {
         console.warn(result.warning);
       }
-      return this._shoppingListFactory.newShoppingListItemList(result.docs);
+      return this._shoppingListFactory.newListOfShoppingListItems(result.docs);
     });
   }
 
