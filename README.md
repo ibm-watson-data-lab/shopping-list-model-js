@@ -85,7 +85,7 @@ shoppingListRepository.get("list:cj6mj1zfj000001n1ugjfkj33").then(shoppingList =
 });
 ```
 
-#### Find a List of Shopping Lists from a Database
+#### Finding a List of Shopping Lists from a Database
 
 Use a Shopping List Repository to find a List of Shopping Lists from a database:
 
@@ -442,7 +442,7 @@ console.log(groceriesItemList.get(0).title);      // Oranges
 console.log(groceriesItemList.get(1).title);      // Pears
 ```
 
-#### Find a List of Shopping List Items for a Shopping List from a Database
+#### Finding a List of Shopping List Items for a Shopping List from a Database
 
 Use a Shopping List Repository to find a List of Shopping List Items from a database when you know the `_id` value of the parent Shopping List:
 
