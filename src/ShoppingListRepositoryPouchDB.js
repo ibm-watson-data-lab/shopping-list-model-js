@@ -143,7 +143,7 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     return this._delete(shoppingListItem);
   }
 
-  getItemList(shoppingListId) {
+  findItems(shoppingListId) {
     return this.db.find({
       selector: {
         type: "item",

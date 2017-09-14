@@ -407,7 +407,7 @@ console.log(groceriesItemList.get(0).title);    // Oranges
 console.log(groceriesItemList.get(1).title);    // Pears
 ```
 
-#### Reading a Shopping List Item List from a Database
+#### Find Shopping List Items for a Shopping List from a Database
 
 Use a Shopping List Repository to read a Shopping List Item List from the database when you know the `_id` value of the parent Shopping List:
 
@@ -445,7 +445,7 @@ shoppingListRepository.ensureIndexes().then(result => {
 }).then(shoppingList => {
   return shoppingListRepository.postItemsBulk(groceriesItemList);
 }).then(groceriesItemList => {
-  return shoppingListRepository.getItemList(shoppingList._id);
+  return shoppingListRepository.findItems(shoppingList._id);
 }).then(groceriesItemList => {
   console.log(groceriesItemList.get(0).title);  // Mangos
   console.log(groceriesItemList.get(1).title);  // Oranges

@@ -20,7 +20,7 @@ class ShoppingListRepository {
 
   deleteItem(shoppingListItem) { }
 
-  getItemList(shoppingListId) {}
+  findItems(shoppingListId) {}
 
 }
 

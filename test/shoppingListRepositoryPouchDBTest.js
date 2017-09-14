@@ -320,7 +320,7 @@ describe("a Shopping List Repository for PouchDB", function() {
     }).should.notify(done);
   });
 
-  it("should read a Shopping List Item List", function(done) {
+  it("should find Shopping List Items for a Shopping List", function(done) {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
@@ -344,7 +344,7 @@ describe("a Shopping List Repository for PouchDB", function() {
       const groceriesItemList = this.shoppingListFactory.newShoppingListItemList([mangos, oranges, pears]);
       return this.shoppingListRepository.postItemsBulk(groceriesItemList);
     }).should.be.fulfilled.then(groceriesItemList => {
-      return this.shoppingListRepository.getItemList(groceries._id);
+      return this.shoppingListRepository.findItems(groceries._id);
     }).should.be.fulfilled.then(groceriesItemList => {
       List.isList(groceriesItemList).should.be.true;
       groceriesItemList.isEmpty().should.be.false;
