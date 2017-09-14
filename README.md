@@ -10,7 +10,7 @@
 
 This package can be installed via npm:
 
-```javascript
+```
 npm install ibm-shopping-list-model
 ```
 
