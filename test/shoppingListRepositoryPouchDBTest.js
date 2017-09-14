@@ -251,7 +251,7 @@ describe("a Shopping List Repository for PouchDB", function() {
     }).should.notify(done);
   });
 
-  it("should find Shopping List Items for a Shopping List", function(done) {
+  it("should find a List of Shopping List Items for a Shopping List", function(done) {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });

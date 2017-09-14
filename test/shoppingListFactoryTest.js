@@ -91,14 +91,14 @@ describe("a Shopping List Factory", function() {
     should.not.exist(shoppingListItem.updatedAt);
   });
 
-  it("should make a new Shopping List Item List that is empty", function() {
+  it("should make a new List of Shopping List Items that is empty", function() {
     const shoppingListItemList = shoppingListFactory.newShoppingListItemList();
     List.isList(shoppingListItemList).should.be.true;
     shoppingListItemList.isEmpty().should.be.true;
     shoppingListItemList.size.should.equal(0);
   });
 
-  it("should make a new Shopping List Item List that includes one Shopping List Item", function() {
+  it("should make a new List of Shopping List Items that includes one Shopping List Item", function() {
     const groceries = shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
@@ -112,7 +112,7 @@ describe("a Shopping List Factory", function() {
     groceriesItemList.includes(mangos).should.be.true;
   });
 
-  it("should make a new Shopping List Item List that includes two Shopping List Items", function() {
+  it("should make a new List of Shopping List Items that includes two Shopping List Items", function() {
     const groceries = shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
