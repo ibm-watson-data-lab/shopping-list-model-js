@@ -113,7 +113,7 @@ let listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([
 shoppingListRepository.ensureIndexes().then(result => {
   return shoppingListRepository.postBulk(listOfShoppingLists);
 }).then(listOfShoppingLists => {
-  return shoppingListRepository.find(listOfShoppingLists);
+  return shoppingListRepository.find();
 }).then(listOfShoppingLists => {
   console.log(listOfShoppingLists.get(0).title);  // Groceries
   console.log(listOfShoppingLists.get(1).title);  // Camping Supplies
