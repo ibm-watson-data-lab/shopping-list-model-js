@@ -273,6 +273,51 @@ shoppingListRepository.getItem("item:cj6mn7e36000001p9n14fgk6s").then(shoppingLi
   console.log(shoppingListItem._rev);             // 1-…
 });
 ```
+#### Finding a List of Shopping List Items for a Shopping List from a Database
+
+Use a Shopping List Repository to find a List of Shopping List Items from a database when you know the `_id` value of the parent Shopping List:
+
+```javascript
+const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
+const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
+
+const shoppingListFactory = new ShoppingListFactory();
+const db = new PouchDB("shopping-list");
+const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
+
+let shoppingList = shoppingListFactory.newShoppingList({
+  title: "Groceries"
+});
+
+let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
+  title: "Mangos"
+}, shoppingList);
+let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
+  title: "Oranges"
+}, shoppingList);
+let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
+  title: "Pears"
+}, shoppingList);
+
+let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
+  shoppingListItem01,
+  shoppingListItem02,
+  shoppingListItem03
+]);
+
+shoppingListRepository.ensureIndexes().then(result => {
+  return shoppingListRepository.post(shoppingList);
+}).then(shoppingList => {
+  return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+}).then(listOfGroceriesItems => {
+  return shoppingListRepository.findItems(shoppingList._id);
+}).then(listOfGroceriesItems => {
+  console.log(listOfGroceriesItems.get(0).title); // Mangos
+  console.log(listOfGroceriesItems.get(1).title); // Oranges
+  console.log(listOfGroceriesItems.get(2).title); // Pears
+});
+```
 
 #### Modifying a Shopping List Item
 
@@ -442,48 +487,3 @@ console.log(listOfGroceriesItems.get(0).title);   // Oranges
 console.log(listOfGroceriesItems.get(1).title);   // Pears
 ```
 
-#### Finding a List of Shopping List Items for a Shopping List from a Database
-
-Use a Shopping List Repository to find a List of Shopping List Items from a database when you know the `_id` value of the parent Shopping List:
-
-```javascript
-const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
-const PouchDB = require("pouchdb");
-PouchDB.plugin(require("pouchdb-find"));
-
-const shoppingListFactory = new ShoppingListFactory();
-const db = new PouchDB("shopping-list");
-const shoppingListRepository = new ShoppingListRepositoryPouchDB(db);
-
-let shoppingList = shoppingListFactory.newShoppingList({
-  title: "Groceries"
-});
-
-let shoppingListItem01 = shoppingListFactory.newShoppingListItem({
-  title: "Mangos"
-}, shoppingList);
-let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
-  title: "Oranges"
-}, shoppingList);
-let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
-  title: "Pears"
-}, shoppingList);
-
-let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
-  shoppingListItem01,
-  shoppingListItem02,
-  shoppingListItem03
-]);
-
-shoppingListRepository.ensureIndexes().then(result => {
-  return shoppingListRepository.post(shoppingList);
-}).then(shoppingList => {
-  return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
-}).then(listOfGroceriesItems => {
-  return shoppingListRepository.findItems(shoppingList._id);
-}).then(listOfGroceriesItems => {
-  console.log(listOfGroceriesItems.get(0).title); // Mangos
-  console.log(listOfGroceriesItems.get(1).title); // Oranges
-  console.log(listOfGroceriesItems.get(2).title); // Pears
-});
-```
