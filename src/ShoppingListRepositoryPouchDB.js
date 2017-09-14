@@ -2,6 +2,7 @@
 
 const { ShoppingListRepository } = require("./ShoppingListRepository");
 const { ShoppingListFactory } = require("./ShoppingListFactory");
+const { Record } = require("immutable");
 
 class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
 
@@ -12,6 +13,9 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
   }
 
   _guardShoppingList(shoppingList) {
+    if (!Record.isRecord(shoppingList)) {
+      throw new Error("Shopping List must be a Record");
+    }
     if (shoppingList._id === undefined) {
       throw new Error("Shopping List _id must be set");
     }
@@ -21,6 +25,9 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
   }
 
   _guardShoppingListItem(shoppingListItem) {
+    if (!Record.isRecord(shoppingListItem)) {
+      throw new Error("Shopping List Item must be a Record");
+    }
     if (shoppingListItem._id === undefined) {
       throw new Error("Shopping List Item _id must be set");
     }
@@ -148,7 +155,11 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
       if (result.warning) {
         console.warn(result.warning);
       }
-      return this._shoppingListFactory.newListOfShoppingListItems(result.docs);
+      let listOfShoppingListItems = this._shoppingListFactory.newListOfShoppingListItems();
+      result.docs.forEach(doc => {
+        listOfShoppingListItems = listOfShoppingListItems.push(this._shoppingListFactory.newShoppingListItem(doc));
+      });
+      return listOfShoppingListItems;
     });
   }
 

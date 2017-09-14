@@ -34,6 +34,9 @@ class ShoppingListFactory {
   }
 
   _guardShoppingList(shoppingList) {
+    if (!Record.isRecord(shoppingList)) {
+      throw new Error("Shopping List must be a Record");
+    }
     if (shoppingList.type != "list") {
       throw new Error("Shopping List type must be list");
     }
@@ -44,6 +47,9 @@ class ShoppingListFactory {
   }
 
   _guardShoppingListItem(shoppingListItem) {
+    if (!Record.isRecord(shoppingListItem)) {
+      throw new Error("Shopping List Item must be a Record");
+    }
     if (shoppingListItem.type != "item") {
       throw new Error("Shopping List Item type must be item");
     }
