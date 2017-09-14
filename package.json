@@ -1,6 +1,6 @@
 {
   "name": "ibm-shopping-list-model",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Domain model implementation for the Shopping List series of Offline First demo apps.",
   "main": "./src/index.js",
   "scripts": {
