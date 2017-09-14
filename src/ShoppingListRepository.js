@@ -10,7 +10,7 @@ class ShoppingListRepository {
 
   get(shoppingListId) { }
 
-  find() {}
+  find(request) {}
 
   delete(shoppingList) { }
 
@@ -22,7 +22,7 @@ class ShoppingListRepository {
 
   getItem(shoppingListItemId) { }
 
-  findItems(shoppingListId) {}
+  findItems(request) {}
 
   deleteItem(shoppingListItem) { }
 

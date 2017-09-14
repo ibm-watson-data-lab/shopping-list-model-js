@@ -311,7 +311,12 @@ shoppingListRepository.ensureIndexes().then(result => {
 }).then(shoppingList => {
   return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
 }).then(listOfGroceriesItems => {
-  return shoppingListRepository.findItems(shoppingList._id);
+  return shoppingListRepository.findItems({
+    selector: {
+      type: "item",
+      list: shoppingList._id
+    }
+  });
 }).then(listOfGroceriesItems => {
   console.log(listOfGroceriesItems.get(0).title); // Mangos
   console.log(listOfGroceriesItems.get(1).title); // Oranges

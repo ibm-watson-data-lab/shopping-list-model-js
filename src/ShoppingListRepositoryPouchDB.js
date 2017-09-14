@@ -36,6 +36,32 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     }
   }
 
+  _guardRequest(request) {
+    if (!request) {
+      throw new Error("Request must be defined");
+    }
+    if (!request.selector) {
+      throw new Error("Request must have a selector property");
+    }
+    if (!request.selector.type) {
+      throw new Error("Request selector must have a type property");
+    }
+  }
+
+  _guardShoppingListRequest(request) {
+    this._guardRequest(request);
+    if (request.selector.type != "list") {
+      throw new Error("Request selector must have a type property with a value of 'list'");
+    }
+  }
+
+  _guardShoppingListItemRequest(request) {
+    this._guardRequest(request);
+    if (request.selector.type != "item") {
+      throw new Error("Request selector must have a type property with a value of 'item'");
+    }
+  }
+
   _post(record) {
     const createdAt = new Date().toISOString();
     record = record.mergeDeep({
@@ -131,12 +157,9 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     });
   }
 
-  find() {
-    return this.db.find({
-      selector: {
-        type: "list"
-      }
-    }).then(result => {
+  find(request = { selector: { type: "list" } }) {
+    this._guardShoppingListRequest(request);
+    return this.db.find(request).then(result => {
       if (result.warning) {
         console.warn(result.warning);
       }
@@ -181,13 +204,9 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     });
   }
 
-  findItems(shoppingListId) {
-    return this.db.find({
-      selector: {
-        type: "item",
-        list: shoppingListId
-      }
-    }).then(result => {
+  findItems(request = { selector: { type: "item" } }) {
+    this._guardShoppingListItemRequest(request);
+    return this.db.find(request).then(result => {
       if (result.warning) {
         console.warn(result.warning);
       }

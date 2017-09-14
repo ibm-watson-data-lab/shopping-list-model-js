@@ -312,7 +312,12 @@ describe("a Shopping List Repository for PouchDB", function() {
       const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
       return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
     }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
-      return this.shoppingListRepository.findItems(groceries._id);
+      return this.shoppingListRepository.findItems({
+        selector: {
+          type: "item",
+          list: groceries._id
+        }
+      });
     }).should.be.fulfilled.then(listOfGroceriesItemsAfterFind => {
       List.isList(listOfGroceriesItemsAfterFind).should.be.true;
       listOfGroceriesItemsAfterFind.isEmpty().should.be.false;
