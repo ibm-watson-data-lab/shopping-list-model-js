@@ -9,14 +9,12 @@ const { List } = require("immutable");
 
 describe("a Shopping List Factory", function() {
 
-  let shoppingListFactory;
-
   beforeEach(function() {
-    shoppingListFactory = new ShoppingListFactory();
+    this.shoppingListFactory = new ShoppingListFactory();
   });
 
   it("should make a new Shopping List with properties", function() {
-    const groceries = shoppingListFactory.newShoppingList({
+    const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
     groceries._id.should.be.a("string")
@@ -35,7 +33,7 @@ describe("a Shopping List Factory", function() {
   });
 
   it("should make a new Shopping List without properties", function() {
-    const shoppingList = shoppingListFactory.newShoppingList();
+    const shoppingList = this.shoppingListFactory.newShoppingList();
     shoppingList._id.should.be.a("string")
       .with.length(30)
       .that.is.a.singleLine()
@@ -52,17 +50,17 @@ describe("a Shopping List Factory", function() {
   });
 
   it("should make a new List of Shopping Lists that is empty", function() {
-    const listOfShoppingLists = shoppingListFactory.newListOfShoppingLists();
+    const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists();
     List.isList(listOfShoppingLists).should.be.true;
     listOfShoppingLists.isEmpty().should.be.true;
     listOfShoppingLists.size.should.equal(0);
   });
 
   it("should make a new List of Shopping Lists that includes one Shopping List", function() {
-    const groceries = shoppingListFactory.newShoppingList({
+    const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    const listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([groceries]);
+    const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists([groceries]);
     List.isList(listOfShoppingLists).should.be.true;
     listOfShoppingLists.isEmpty().should.be.false;
     listOfShoppingLists.size.should.equal(1);
@@ -70,13 +68,13 @@ describe("a Shopping List Factory", function() {
   });
 
   it("should make a new List of Shopping Lists that includes two Shopping Lists", function() {
-    const groceries = shoppingListFactory.newShoppingList({
+    const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    const campingSupplies = shoppingListFactory.newShoppingList({
+    const campingSupplies = this.shoppingListFactory.newShoppingList({
       title: "Camping Supplies"
     });
-    const listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
+    const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
     List.isList(listOfShoppingLists).should.be.true;
     listOfShoppingLists.isEmpty().should.be.false;
     listOfShoppingLists.size.should.equal(2);
@@ -87,10 +85,10 @@ describe("a Shopping List Factory", function() {
   });
 
   it("should make a new Shopping List Item with properties", function() {
-    const groceries = shoppingListFactory.newShoppingList({
+    const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    const mangos = shoppingListFactory.newShoppingListItem({
+    const mangos = this.shoppingListFactory.newShoppingListItem({
       title: "Mangos"
     }, groceries);
     mangos._id.should.be.a("string")
@@ -109,8 +107,8 @@ describe("a Shopping List Factory", function() {
   });
 
   it("should make a new Shopping List Item without properties", function() {
-    const shoppingList = shoppingListFactory.newShoppingList();
-    const shoppingListItem = shoppingListFactory.newShoppingListItem({}, shoppingList);
+    const shoppingList = this.shoppingListFactory.newShoppingList();
+    const shoppingListItem = this.shoppingListFactory.newShoppingListItem({}, shoppingList);
     shoppingListItem._id.should.be.a("string")
       .with.length(30)
       .that.is.a.singleLine()
@@ -127,20 +125,20 @@ describe("a Shopping List Factory", function() {
   });
 
   it("should make a new List of Shopping List Items that is empty", function() {
-    const listOfshoppingListItems = shoppingListFactory.newListOfShoppingListItems();
+    const listOfshoppingListItems = this.shoppingListFactory.newListOfShoppingListItems();
     List.isList(listOfshoppingListItems).should.be.true;
     listOfshoppingListItems.isEmpty().should.be.true;
     listOfshoppingListItems.size.should.equal(0);
   });
 
   it("should make a new List of Shopping List Items that includes one Shopping List Item", function() {
-    const groceries = shoppingListFactory.newShoppingList({
+    const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    const mangos = shoppingListFactory.newShoppingListItem({
+    const mangos = this.shoppingListFactory.newShoppingListItem({
       title: "Mangos"
     }, groceries);
-    const listOfgroceriesItems = shoppingListFactory.newListOfShoppingListItems([mangos]);
+    const listOfgroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos]);
     List.isList(listOfgroceriesItems).should.be.true;
     listOfgroceriesItems.isEmpty().should.be.false;
     listOfgroceriesItems.size.should.equal(1);
@@ -148,16 +146,16 @@ describe("a Shopping List Factory", function() {
   });
 
   it("should make a new List of Shopping List Items that includes two Shopping List Items", function() {
-    const groceries = shoppingListFactory.newShoppingList({
+    const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    const mangos = shoppingListFactory.newShoppingListItem({
+    const mangos = this.shoppingListFactory.newShoppingListItem({
       title: "Mangos"
     }, groceries);
-    const oranges = shoppingListFactory.newShoppingListItem({
+    const oranges = this.shoppingListFactory.newShoppingListItem({
       title: "Oranges"
     }, groceries);
-    const listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([mangos, oranges]);
+    const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges]);
     List.isList(listOfGroceriesItems).should.be.true;
     listOfGroceriesItems.isEmpty().should.be.false;
     listOfGroceriesItems.size.should.equal(2);

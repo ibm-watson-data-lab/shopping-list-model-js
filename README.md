@@ -389,13 +389,13 @@ let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
   title: "Oranges"
 }, shoppingList);
 
-let groceriesItemList = shoppingListFactory.newListOfShoppingListItems([
+let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
   shoppingListItem01,
   shoppingListItem02
 ]);
 
-console.log(groceriesItemList.get(0).title);      // Mangos
-console.log(groceriesItemList.get(1).title);      // Oranges
+console.log(listOfGroceriesItems.get(0).title);   // Mangos
+console.log(listOfGroceriesItems.get(1).title);   // Oranges
 ```
 
 #### Modifying a Shopping List Item List
@@ -418,28 +418,28 @@ let shoppingListItem02 = shoppingListFactory.newShoppingListItem({
   title: "Oranges"
 }, shoppingList);
 
-let groceriesItemList = shoppingListFactory.newListOfShoppingListItems([
+let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
   shoppingListItem01,
   shoppingListItem02
 ]);
 
-console.log(groceriesItemList.get(0).title);      // Mangos
-console.log(groceriesItemList.get(1).title);      // Oranges
+console.log(listOfGroceriesItems.get(0).title);   // Mangos
+console.log(listOfGroceriesItems.get(1).title);   // Oranges
 
 let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
   title: "Pears"
 }, shoppingList);
 
-groceriesItemList = groceriesItemList.push(shoppingListItem03);
+listOfGroceriesItems = listOfGroceriesItems.push(shoppingListItem03);
 
-console.log(groceriesItemList.get(0).title);      // Mangos
-console.log(groceriesItemList.get(1).title);      // Oranges
-console.log(groceriesItemList.get(2).title);      // Pears
+console.log(listOfGroceriesItems.get(0).title);   // Mangos
+console.log(listOfGroceriesItems.get(1).title);   // Oranges
+console.log(listOfGroceriesItems.get(2).title);   // Pears
 
-groceriesItemList = groceriesItemList.delete(0);
+listOfGroceriesItems = listOfGroceriesItems.delete(0);
 
-console.log(groceriesItemList.get(0).title);      // Oranges
-console.log(groceriesItemList.get(1).title);      // Pears
+console.log(listOfGroceriesItems.get(0).title);   // Oranges
+console.log(listOfGroceriesItems.get(1).title);   // Pears
 ```
 
 #### Finding a List of Shopping List Items for a Shopping List from a Database
@@ -469,7 +469,7 @@ let shoppingListItem03 = shoppingListFactory.newShoppingListItem({
   title: "Pears"
 }, shoppingList);
 
-let groceriesItemList = shoppingListFactory.newListOfShoppingListItems([
+let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
   shoppingListItem01,
   shoppingListItem02,
   shoppingListItem03
@@ -478,12 +478,12 @@ let groceriesItemList = shoppingListFactory.newListOfShoppingListItems([
 shoppingListRepository.ensureIndexes().then(result => {
   return shoppingListRepository.post(shoppingList);
 }).then(shoppingList => {
-  return shoppingListRepository.postItemsBulk(groceriesItemList);
-}).then(groceriesItemList => {
+  return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+}).then(listOfGroceriesItems => {
   return shoppingListRepository.findItems(shoppingList._id);
-}).then(groceriesItemList => {
-  console.log(groceriesItemList.get(0).title);    // Mangos
-  console.log(groceriesItemList.get(1).title);    // Oranges
-  console.log(groceriesItemList.get(2).title);    // Pears
+}).then(listOfGroceriesItems => {
+  console.log(listOfGroceriesItems.get(0).title); // Mangos
+  console.log(listOfGroceriesItems.get(1).title); // Oranges
+  console.log(listOfGroceriesItems.get(2).title); // Pears
 });
 ```

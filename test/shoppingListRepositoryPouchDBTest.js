@@ -222,15 +222,15 @@ describe("a Shopping List Repository for PouchDB", function() {
       pears = this.shoppingListFactory.newShoppingListItem({
         title: "Pears"
       }, groceries);
-      const groceriesItemList = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
-      return this.shoppingListRepository.postItemsBulk(groceriesItemList);
-    }).should.be.fulfilled.then(listOfGroceriesItems => {
-      List.isList(listOfGroceriesItems).should.be.true;
-      listOfGroceriesItems.isEmpty().should.be.false;
-      listOfGroceriesItems.size.should.equal(3);
-      const mangosAfterPost = listOfGroceriesItems.get(0);
-      const orangesAfterPost = listOfGroceriesItems.get(1);
-      const pearsAfterPost = listOfGroceriesItems.get(2);
+      const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
+      return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
+      List.isList(listOfGroceriesItemsAfterPost).should.be.true;
+      listOfGroceriesItemsAfterPost.isEmpty().should.be.false;
+      listOfGroceriesItemsAfterPost.size.should.equal(3);
+      const mangosAfterPost = listOfGroceriesItemsAfterPost.get(0);
+      const orangesAfterPost = listOfGroceriesItemsAfterPost.get(1);
+      const pearsAfterPost = listOfGroceriesItemsAfterPost.get(2);
       mangosAfterPost.should.have.deep.property("_id", mangos._id);
       mangosAfterPost.should.have.deep.property("_rev").that.is.a("string");
       mangosAfterPost.should.have.deep.property("type", "item");
@@ -309,17 +309,17 @@ describe("a Shopping List Repository for PouchDB", function() {
       pears = this.shoppingListFactory.newShoppingListItem({
         title: "Pears"
       }, groceries);
-      const groceriesItemList = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
-      return this.shoppingListRepository.postItemsBulk(groceriesItemList);
-    }).should.be.fulfilled.then(groceriesItemList => {
+      const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
+      return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
       return this.shoppingListRepository.findItems(groceries._id);
-    }).should.be.fulfilled.then(listOfGroceriesItems => {
-      List.isList(listOfGroceriesItems).should.be.true;
-      listOfGroceriesItems.isEmpty().should.be.false;
-      listOfGroceriesItems.size.should.equal(3);
-      const mangosAfterPost = listOfGroceriesItems.get(0);
-      const orangesAfterPost = listOfGroceriesItems.get(1);
-      const pearsAfterPost = listOfGroceriesItems.get(2);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterFind => {
+      List.isList(listOfGroceriesItemsAfterFind).should.be.true;
+      listOfGroceriesItemsAfterFind.isEmpty().should.be.false;
+      listOfGroceriesItemsAfterFind.size.should.equal(3);
+      const mangosAfterPost = listOfGroceriesItemsAfterFind.get(0);
+      const orangesAfterPost = listOfGroceriesItemsAfterFind.get(1);
+      const pearsAfterPost = listOfGroceriesItemsAfterFind.get(2);
       mangosAfterPost.should.have.deep.property("_id", mangos._id);
       mangosAfterPost.should.have.deep.property("_rev").that.is.a("string");
       mangosAfterPost.should.have.deep.property("type", "item");
