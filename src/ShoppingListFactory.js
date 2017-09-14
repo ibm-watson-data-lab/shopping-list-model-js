@@ -33,6 +33,16 @@ class ShoppingListFactory {
     });
   }
 
+  _guardShoppingList(shoppingList) {
+    if (shoppingList.type != "list") {
+      throw new Error("Shopping List type must be list");
+    }
+  }
+
+  _guardListOfShoppingLists(listOfShoppingLists) {
+    listOfShoppingLists.forEach(shoppingList => this._guardShoppingList(shoppingList));
+  }
+
   _guardShoppingListItem(shoppingListItem) {
     if (shoppingListItem.type != "item") {
       throw new Error("Shopping List Item type must be item");
@@ -49,6 +59,12 @@ class ShoppingListFactory {
       shoppingList = shoppingList.set("_id", "list:" + cuid());
     }
     return shoppingList;
+  }
+
+  newListOfShoppingLists(shoppingLists) {
+    let listOfShoppingLists = new List(shoppingLists);
+    this._guardListOfShoppingLists(listOfShoppingLists);
+    return listOfShoppingLists;
   }
 
   newShoppingListItem(values, shoppingList) {

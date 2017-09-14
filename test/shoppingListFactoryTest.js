@@ -51,6 +51,41 @@ describe("a Shopping List Factory", function() {
     should.not.exist(shoppingList.updatedAt);
   });
 
+  it("should make a new List of Shopping Lists that is empty", function() {
+    const listOfShoppingLists = shoppingListFactory.newListOfShoppingLists();
+    List.isList(listOfShoppingLists).should.be.true;
+    listOfShoppingLists.isEmpty().should.be.true;
+    listOfShoppingLists.size.should.equal(0);
+  });
+
+  it("should make a new List of Shopping Lists that includes one Shopping List", function() {
+    const groceries = shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    const listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([groceries]);
+    List.isList(listOfShoppingLists).should.be.true;
+    listOfShoppingLists.isEmpty().should.be.false;
+    listOfShoppingLists.size.should.equal(1);
+    listOfShoppingLists.includes(groceries).should.be.true;
+  });
+
+  it("should make a new List of Shopping Lists that includes two Shopping Lists", function() {
+    const groceries = shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    const campingSupplies = shoppingListFactory.newShoppingList({
+      title: "Camping Supplies"
+    });
+    const listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
+    List.isList(listOfShoppingLists).should.be.true;
+    listOfShoppingLists.isEmpty().should.be.false;
+    listOfShoppingLists.size.should.equal(2);
+    listOfShoppingLists.includes(groceries).should.be.true;
+    listOfShoppingLists.includes(campingSupplies).should.be.true;
+    listOfShoppingLists.first().equals(groceries).should.be.true;
+    listOfShoppingLists.last().equals(campingSupplies).should.be.true;
+  });
+
   it("should make a new Shopping List Item with properties", function() {
     const groceries = shoppingListFactory.newShoppingList({
       title: "Groceries"
