@@ -18,9 +18,9 @@ class ShoppingListRepository {
 
   getItem(shoppingListItemId) { }
 
-  deleteItem(shoppingListItem) { }
-
   findItems(shoppingListId) {}
+
+  deleteItem(shoppingListItem) { }
 
 }
 

@@ -138,11 +138,6 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     });
   }
 
-  deleteItem(shoppingListItem) {
-    this._guardShoppingListItem(shoppingListItem);
-    return this._delete(shoppingListItem);
-  }
-
   findItems(shoppingListId) {
     return this.db.find({
       selector: {
@@ -155,6 +150,11 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
       }
       return this._shoppingListFactory.newShoppingListItemList(result.docs);
     });
+  }
+
+  deleteItem(shoppingListItem) {
+    this._guardShoppingListItem(shoppingListItem);
+    return this._delete(shoppingListItem);
   }
 
 }
