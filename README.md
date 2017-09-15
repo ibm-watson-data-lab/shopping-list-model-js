@@ -175,7 +175,7 @@ shoppingListRepository.put(shoppingList).then(shoppingList => {
 
 #### Deleting a Shopping List from a Database
 
-Use a Shopping List Repository to delete a Shopping List from a database, after saving it to a database:
+Use a Shopping List Repository to delete a Shopping List (and all of its Shopping List Items) from a database, after saving it to a database:
 
 ```javascript
 const { ShoppingListFactory, ShoppingListRepositoryPouchDB } = require("ibm-shopping-list-model");
@@ -190,7 +190,9 @@ let shoppingList = shoppingListFactory.newShoppingList({
   title: "Groceries"
 });
 
-shoppingListRepository.put(shoppingList).then(shoppingList => {
+shoppingListRepository.ensureIndexes().then(result => {
+  return shoppingListRepository.put(shoppingList);
+}).then(shoppingList => {
   console.log(shoppingList._id);                    // list:…
   console.log(shoppingList._rev);                   // 1-…
   console.log(shoppingList.title);                  // Groceries

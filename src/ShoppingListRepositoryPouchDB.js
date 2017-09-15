@@ -177,7 +177,16 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
 
   delete(shoppingList) {
     this._guardShoppingList(shoppingList);
-    return this._delete(shoppingList);
+    return this._delete(shoppingList).then(shoppingList => {
+      return this.deleteItemsBulkByFind({
+        selector: {
+          type: "item",
+          list: shoppingList._id
+        }
+      }).then(listOfShoppingListItems => {
+        return shoppingList;
+      });
+    });
   }
 
   putItem(shoppingListItem) {
@@ -231,6 +240,25 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
   deleteItem(shoppingListItem) {
     this._guardShoppingListItem(shoppingListItem);
     return this._delete(shoppingListItem);
+  }
+
+  deleteItemsBulk(shoppingListItems) {
+    let deletedItems = [];
+    shoppingListItems.forEach(shoppingListItem => {
+      deletedItems.push(this.deleteItem(shoppingListItem));
+    });
+    return Promise.all(deletedItems).then(shoppingListItems => {
+      return this._shoppingListFactory.newListOfShoppingListItems(shoppingListItems);
+    });
+  }
+
+  deleteItemsBulkByFind(request = { selector: { type: "item" } }) {
+    if (request.fields) {
+      throw new Error("Request must not have a fields property");
+    }
+    return this.findItems(request).then(listOfShoppingListItems => {
+      return this.deleteItemsBulk(listOfShoppingListItems);
+    });
   }
 
 }

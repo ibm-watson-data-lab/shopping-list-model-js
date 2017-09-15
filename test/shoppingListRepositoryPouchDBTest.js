@@ -152,7 +152,9 @@ describe("a Shopping List Repository for PouchDB", function() {
     let idAfterPut;
     let revAfterPut;
     let clock;
-    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
+    this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
+      return this.shoppingListRepository.put(groceries);
+    }).should.be.fulfilled.then(groceriesAfterPut => {
       idAfterPut = groceriesAfterPut._id;
       revAfterPut = groceriesAfterPut._rev;
       clock = sinon.useFakeTimers(1504060809314);
@@ -174,6 +176,45 @@ describe("a Shopping List Repository for PouchDB", function() {
       groceriesAfterDelete.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
       clock.restore();
       return this.shoppingListRepository.get(idAfterPut).should.be.rejectedWith(Error);
+    }).should.notify(done);
+  });
+
+  it("should delete a Shopping List and all of its Shopping List Items", function(done) {
+    const groceries = this.shoppingListFactory.newShoppingList({
+      title: "Groceries"
+    });
+    let groceriesAfterPut;
+    let mangos;
+    let oranges;
+    let pears;
+    this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
+      return this.shoppingListRepository.put(groceries);
+    }).should.be.fulfilled.then(groceriesAfterPutResult => {
+      groceriesAfterPut = groceriesAfterPutResult;
+      mangos = this.shoppingListFactory.newShoppingListItem({
+        title: "Mangos"
+      }, groceries);
+      oranges = this.shoppingListFactory.newShoppingListItem({
+        title: "Oranges"
+      }, groceries);
+      pears = this.shoppingListFactory.newShoppingListItem({
+        title: "Pears"
+      }, groceries);
+      const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
+      return this.shoppingListRepository.putItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPut => {
+      return this.shoppingListRepository.delete(groceriesAfterPut);
+    }).should.be.fulfilled.then(groceriesAfterDelete => {
+      return this.shoppingListRepository.findItems({
+        selector: {
+          type: "item",
+          list: groceries._id
+        }
+      });
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterFind => {
+      List.isList(listOfGroceriesItemsAfterFind).should.be.true;
+      listOfGroceriesItemsAfterFind.isEmpty().should.be.true;
+      listOfGroceriesItemsAfterFind.size.should.equal(0);
     }).should.notify(done);
   });
 
