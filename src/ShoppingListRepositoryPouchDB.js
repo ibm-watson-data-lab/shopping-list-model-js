@@ -219,7 +219,7 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
 
   findItemsCountByList(request = { selector: { type: "item" }, fields: [ "list" ] }) {
     if (request.fields && !request.fields.includes("list")) {
-      throw new Error("Request selector must have a fields property that includes a value of 'list'");
+      throw new Error("Request must have a fields property that includes a value of 'list'");
     }
     return this.findItems(request).then(listOfShoppingListItems => {
       return listOfShoppingListItems.countBy(shoppingListItem => {
