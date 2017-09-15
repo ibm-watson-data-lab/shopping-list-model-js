@@ -2,6 +2,8 @@
 
 # Shopping List Domain Model
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ibm-watson-data-lab/shopping-list-model-js.svg)](https://greenkeeper.io/)
+
 **Note:** This is a work in progress. Use exact versions when installing (e.g. `--save-exact`) as backwards-incompatible changes may be introduced.
 
 [Shopping List](https://github.com/ibm-watson-data-lab/shopping-list) is a series of Offline First demo apps, each built using a different stack. This is a JavaScript implementation of the domain model for the Shopping List app. This package may be used in Vanilla JS, Polymer, React, Preact, Vue.js, Ember.js, React Native, Ionic, Cordova, Electron, and any other JavaScript implementations of the Shopping List demo app.
