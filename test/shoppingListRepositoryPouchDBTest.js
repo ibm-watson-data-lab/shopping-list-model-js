@@ -37,20 +37,20 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
-      groceriesAfterPost.should.be.an.instanceof(Record);
-      groceriesAfterPost._id.should.be.a("string")
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
+      groceriesAfterPut.should.be.an.instanceof(Record);
+      groceriesAfterPut._id.should.be.a("string")
         .with.length(30)
         .that.is.a.singleLine()
         .and.startsWith("list:");
-      groceriesAfterPost.should.have.deep.property("_rev").that.is.a("string");
-      groceriesAfterPost.should.have.deep.property("type", "list");
-      groceriesAfterPost.should.have.deep.property("version", 1);
-      groceriesAfterPost.should.have.deep.property("title", "Groceries");
-      groceriesAfterPost.should.have.deep.property("checked", false);
-      groceriesAfterPost.should.have.deep.property("place", undefined);
-      groceriesAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
-      groceriesAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:08.000Z");
+      groceriesAfterPut.should.have.deep.property("_rev").that.is.a("string");
+      groceriesAfterPut.should.have.deep.property("type", "list");
+      groceriesAfterPut.should.have.deep.property("version", 1);
+      groceriesAfterPut.should.have.deep.property("title", "Groceries");
+      groceriesAfterPut.should.have.deep.property("checked", false);
+      groceriesAfterPut.should.have.deep.property("place", undefined);
+      groceriesAfterPut.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
+      groceriesAfterPut.should.have.deep.property("updatedAt", "2017-08-30T02:40:08.000Z");
     }).should.notify(done);
   });
 
@@ -58,17 +58,17 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    let revAfterPost;
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
-      revAfterPost = groceriesAfterPost._rev;
-      return this.shoppingListRepository.get(groceriesAfterPost._id);
+    let revAfterPut;
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
+      revAfterPut = groceriesAfterPut._rev;
+      return this.shoppingListRepository.get(groceriesAfterPut._id);
     }).should.be.fulfilled.then(groceriesAfterGet => {
       groceriesAfterGet.should.be.an.instanceof(Record);
       groceriesAfterGet._id.should.be.a("string")
         .with.length(30)
         .that.is.a.singleLine()
         .and.startsWith("list:");
-      groceriesAfterGet.should.have.deep.property("_rev").that.is.a("string").and.does.equal(revAfterPost);
+      groceriesAfterGet.should.have.deep.property("_rev").that.is.a("string").and.does.equal(revAfterPut);
       groceriesAfterGet.should.have.deep.property("type", "list");
       groceriesAfterGet.should.have.deep.property("version", 1);
       groceriesAfterGet.should.have.deep.property("title", "Groceries");
@@ -88,8 +88,8 @@ describe("a Shopping List Repository for PouchDB", function() {
     });
     const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
     this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
-      return this.shoppingListRepository.postBulk(listOfShoppingLists);
-    }).should.be.fulfilled.then(listOfShoppingListsAfterPost => {
+      return this.shoppingListRepository.putBulk(listOfShoppingLists);
+    }).should.be.fulfilled.then(listOfShoppingListsAfterPut => {
       return this.shoppingListRepository.find();
     }).should.be.fulfilled.then(listOfShoppingListsAfterFind => {
       List.isList(listOfShoppingListsAfterFind).should.be.true;
@@ -120,20 +120,20 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    let revAfterPost;
+    let revAfterPut;
     let clock;
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
-      revAfterPost = groceriesAfterPost._rev;
-      const groceriesAfterPostUpdated = groceriesAfterPost.set("checked", true);
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
+      revAfterPut = groceriesAfterPut._rev;
+      const groceriesAfterPutUpdated = groceriesAfterPut.set("checked", true);
       clock = sinon.useFakeTimers(1504060809314);
-      return this.shoppingListRepository.put(groceriesAfterPostUpdated);
+      return this.shoppingListRepository.put(groceriesAfterPutUpdated);
     }).should.be.fulfilled.then(groceriesAfterPut => {
       groceriesAfterPut.should.be.an.instanceof(Record);
       groceriesAfterPut._id.should.be.a("string")
         .with.length(30)
         .that.is.a.singleLine()
         .and.startsWith("list:");
-      groceriesAfterPut.should.have.deep.property("_rev").that.is.a("string").and.does.not.equal(revAfterPost);
+      groceriesAfterPut.should.have.deep.property("_rev").that.is.a("string").and.does.not.equal(revAfterPut);
       groceriesAfterPut.should.have.deep.property("type", "list");
       groceriesAfterPut.should.have.deep.property("version", 1);
       groceriesAfterPut.should.have.deep.property("title", "Groceries");
@@ -149,21 +149,21 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    let idAfterPost;
-    let revAfterPost;
+    let idAfterPut;
+    let revAfterPut;
     let clock;
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
-      idAfterPost = groceriesAfterPost._id;
-      revAfterPost = groceriesAfterPost._rev;
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
+      idAfterPut = groceriesAfterPut._id;
+      revAfterPut = groceriesAfterPut._rev;
       clock = sinon.useFakeTimers(1504060809314);
-      return this.shoppingListRepository.delete(groceriesAfterPost);
+      return this.shoppingListRepository.delete(groceriesAfterPut);
     }).should.be.fulfilled.then(groceriesAfterDelete => {
       groceriesAfterDelete.should.be.an.instanceof(Record);
       groceriesAfterDelete._id.should.be.a("string")
         .with.length(30)
         .that.is.a.singleLine()
         .and.startsWith("list:");
-      groceriesAfterDelete.should.have.deep.property("_rev").that.is.a("string").and.does.not.equal(revAfterPost);
+      groceriesAfterDelete.should.have.deep.property("_rev").that.is.a("string").and.does.not.equal(revAfterPut);
       groceriesAfterDelete.should.have.deep.property("_deleted", true);
       groceriesAfterDelete.should.have.deep.property("type", "list");
       groceriesAfterDelete.should.have.deep.property("version", 1);
@@ -173,7 +173,7 @@ describe("a Shopping List Repository for PouchDB", function() {
       groceriesAfterDelete.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
       groceriesAfterDelete.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
       clock.restore();
-      return this.shoppingListRepository.get(idAfterPost).should.be.rejectedWith(Error);
+      return this.shoppingListRepository.get(idAfterPut).should.be.rejectedWith(Error);
     }).should.notify(done);
   });
 
@@ -181,25 +181,25 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
       const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
-      return this.shoppingListRepository.postItem(mangos);
-    }).should.be.fulfilled.then(mangosAfterPost => {
-      mangosAfterPost.should.be.an.instanceof(Record);
-      mangosAfterPost._id.should.be.a("string")
+      return this.shoppingListRepository.putItem(mangos);
+    }).should.be.fulfilled.then(mangosAfterPut => {
+      mangosAfterPut.should.be.an.instanceof(Record);
+      mangosAfterPut._id.should.be.a("string")
         .with.length(30)
         .that.is.a.singleLine()
         .and.startsWith("item:");
-      mangosAfterPost.should.have.deep.property("_rev").that.is.a("string");
-      mangosAfterPost.should.have.deep.property("type", "item");
-      mangosAfterPost.should.have.deep.property("version", 1);
-      mangosAfterPost.should.have.deep.property("list", groceries._id);
-      mangosAfterPost.should.have.deep.property("title", "Mangos");
-      mangosAfterPost.should.have.deep.property("checked", false);
-      mangosAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
-      mangosAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:08.000Z");
+      mangosAfterPut.should.have.deep.property("_rev").that.is.a("string");
+      mangosAfterPut.should.have.deep.property("type", "item");
+      mangosAfterPut.should.have.deep.property("version", 1);
+      mangosAfterPut.should.have.deep.property("list", groceries._id);
+      mangosAfterPut.should.have.deep.property("title", "Mangos");
+      mangosAfterPut.should.have.deep.property("checked", false);
+      mangosAfterPut.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
+      mangosAfterPut.should.have.deep.property("updatedAt", "2017-08-30T02:40:08.000Z");
     }).should.notify(done);
   });
 
@@ -211,7 +211,7 @@ describe("a Shopping List Repository for PouchDB", function() {
     let mangos;
     let oranges;
     let pears;
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
       clock = sinon.useFakeTimers(1504060809314);
       mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
@@ -223,38 +223,38 @@ describe("a Shopping List Repository for PouchDB", function() {
         title: "Pears"
       }, groceries);
       const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
-      return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
-    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
-      List.isList(listOfGroceriesItemsAfterPost).should.be.true;
-      listOfGroceriesItemsAfterPost.isEmpty().should.be.false;
-      listOfGroceriesItemsAfterPost.size.should.equal(3);
-      const mangosAfterPost = listOfGroceriesItemsAfterPost.get(0);
-      const orangesAfterPost = listOfGroceriesItemsAfterPost.get(1);
-      const pearsAfterPost = listOfGroceriesItemsAfterPost.get(2);
-      mangosAfterPost.should.have.deep.property("_id", mangos._id);
-      mangosAfterPost.should.have.deep.property("_rev").that.is.a("string");
-      mangosAfterPost.should.have.deep.property("type", "item");
-      mangosAfterPost.should.have.deep.property("list", groceries._id);
-      mangosAfterPost.should.have.deep.property("title", "Mangos");
-      mangosAfterPost.should.have.deep.property("checked", false);
-      mangosAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
-      mangosAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
-      orangesAfterPost.should.have.deep.property("_id", oranges._id);
-      orangesAfterPost.should.have.deep.property("_rev").that.is.a("string");
-      orangesAfterPost.should.have.deep.property("type", "item");
-      orangesAfterPost.should.have.deep.property("list", groceries._id);
-      orangesAfterPost.should.have.deep.property("title", "Oranges");
-      orangesAfterPost.should.have.deep.property("checked", false);
-      orangesAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
-      orangesAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
-      pearsAfterPost.should.have.deep.property("_id", pears._id);
-      pearsAfterPost.should.have.deep.property("_rev").that.is.a("string");
-      pearsAfterPost.should.have.deep.property("type", "item");
-      pearsAfterPost.should.have.deep.property("list", groceries._id);
-      pearsAfterPost.should.have.deep.property("title", "Pears");
-      pearsAfterPost.should.have.deep.property("checked", false);
-      pearsAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
-      pearsAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      return this.shoppingListRepository.putItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPut => {
+      List.isList(listOfGroceriesItemsAfterPut).should.be.true;
+      listOfGroceriesItemsAfterPut.isEmpty().should.be.false;
+      listOfGroceriesItemsAfterPut.size.should.equal(3);
+      const mangosAfterPut = listOfGroceriesItemsAfterPut.get(0);
+      const orangesAfterPut = listOfGroceriesItemsAfterPut.get(1);
+      const pearsAfterPut = listOfGroceriesItemsAfterPut.get(2);
+      mangosAfterPut.should.have.deep.property("_id", mangos._id);
+      mangosAfterPut.should.have.deep.property("_rev").that.is.a("string");
+      mangosAfterPut.should.have.deep.property("type", "item");
+      mangosAfterPut.should.have.deep.property("list", groceries._id);
+      mangosAfterPut.should.have.deep.property("title", "Mangos");
+      mangosAfterPut.should.have.deep.property("checked", false);
+      mangosAfterPut.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      mangosAfterPut.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      orangesAfterPut.should.have.deep.property("_id", oranges._id);
+      orangesAfterPut.should.have.deep.property("_rev").that.is.a("string");
+      orangesAfterPut.should.have.deep.property("type", "item");
+      orangesAfterPut.should.have.deep.property("list", groceries._id);
+      orangesAfterPut.should.have.deep.property("title", "Oranges");
+      orangesAfterPut.should.have.deep.property("checked", false);
+      orangesAfterPut.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      orangesAfterPut.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      pearsAfterPut.should.have.deep.property("_id", pears._id);
+      pearsAfterPut.should.have.deep.property("_rev").that.is.a("string");
+      pearsAfterPut.should.have.deep.property("type", "item");
+      pearsAfterPut.should.have.deep.property("list", groceries._id);
+      pearsAfterPut.should.have.deep.property("title", "Pears");
+      pearsAfterPut.should.have.deep.property("checked", false);
+      pearsAfterPut.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      pearsAfterPut.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
       clock.restore();
     }).should.notify(done);
   });
@@ -263,22 +263,22 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    let revAfterPost;
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    let revAfterPut;
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
       const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
-      return this.shoppingListRepository.postItem(mangos);
-    }).should.be.fulfilled.then(mangosAfterPost => {
-      revAfterPost = mangosAfterPost._rev;
-      return this.shoppingListRepository.getItem(mangosAfterPost._id);
+      return this.shoppingListRepository.putItem(mangos);
+    }).should.be.fulfilled.then(mangosAfterPut => {
+      revAfterPut = mangosAfterPut._rev;
+      return this.shoppingListRepository.getItem(mangosAfterPut._id);
     }).should.be.fulfilled.then(mangosAfterGet => {
       mangosAfterGet.should.be.an.instanceof(Record);
       mangosAfterGet._id.should.be.a("string")
         .with.length(30)
         .that.is.a.singleLine()
         .and.startsWith("item:");
-      mangosAfterGet.should.have.deep.property("_rev").that.is.a("string").and.does.equal(revAfterPost);
+      mangosAfterGet.should.have.deep.property("_rev").that.is.a("string").and.does.equal(revAfterPut);
       mangosAfterGet.should.have.deep.property("type", "item");
       mangosAfterGet.should.have.deep.property("version", 1);
       mangosAfterGet.should.have.deep.property("title", "Mangos");
@@ -297,8 +297,8 @@ describe("a Shopping List Repository for PouchDB", function() {
     let oranges;
     let pears;
     this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
-      return this.shoppingListRepository.post(groceries);
-    }).should.be.fulfilled.then(groceriesAfterPost => {
+      return this.shoppingListRepository.put(groceries);
+    }).should.be.fulfilled.then(groceriesAfterPut => {
       clock = sinon.useFakeTimers(1504060809314);
       mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
@@ -310,8 +310,8 @@ describe("a Shopping List Repository for PouchDB", function() {
         title: "Pears"
       }, groceries);
       const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
-      return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
-    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
+      return this.shoppingListRepository.putItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPut => {
       return this.shoppingListRepository.findItems({
         selector: {
           type: "item",
@@ -322,33 +322,33 @@ describe("a Shopping List Repository for PouchDB", function() {
       List.isList(listOfGroceriesItemsAfterFind).should.be.true;
       listOfGroceriesItemsAfterFind.isEmpty().should.be.false;
       listOfGroceriesItemsAfterFind.size.should.equal(3);
-      const mangosAfterPost = listOfGroceriesItemsAfterFind.get(0);
-      const orangesAfterPost = listOfGroceriesItemsAfterFind.get(1);
-      const pearsAfterPost = listOfGroceriesItemsAfterFind.get(2);
-      mangosAfterPost.should.have.deep.property("_id", mangos._id);
-      mangosAfterPost.should.have.deep.property("_rev").that.is.a("string");
-      mangosAfterPost.should.have.deep.property("type", "item");
-      mangosAfterPost.should.have.deep.property("list", groceries._id);
-      mangosAfterPost.should.have.deep.property("title", "Mangos");
-      mangosAfterPost.should.have.deep.property("checked", false);
-      mangosAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
-      mangosAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
-      orangesAfterPost.should.have.deep.property("_id", oranges._id);
-      orangesAfterPost.should.have.deep.property("_rev").that.is.a("string");
-      orangesAfterPost.should.have.deep.property("type", "item");
-      orangesAfterPost.should.have.deep.property("list", groceries._id);
-      orangesAfterPost.should.have.deep.property("title", "Oranges");
-      orangesAfterPost.should.have.deep.property("checked", false);
-      orangesAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
-      orangesAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
-      pearsAfterPost.should.have.deep.property("_id", pears._id);
-      pearsAfterPost.should.have.deep.property("_rev").that.is.a("string");
-      pearsAfterPost.should.have.deep.property("type", "item");
-      pearsAfterPost.should.have.deep.property("list", groceries._id);
-      pearsAfterPost.should.have.deep.property("title", "Pears");
-      pearsAfterPost.should.have.deep.property("checked", false);
-      pearsAfterPost.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
-      pearsAfterPost.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      const mangosAfterPut = listOfGroceriesItemsAfterFind.get(0);
+      const orangesAfterPut = listOfGroceriesItemsAfterFind.get(1);
+      const pearsAfterPut = listOfGroceriesItemsAfterFind.get(2);
+      mangosAfterPut.should.have.deep.property("_id", mangos._id);
+      mangosAfterPut.should.have.deep.property("_rev").that.is.a("string");
+      mangosAfterPut.should.have.deep.property("type", "item");
+      mangosAfterPut.should.have.deep.property("list", groceries._id);
+      mangosAfterPut.should.have.deep.property("title", "Mangos");
+      mangosAfterPut.should.have.deep.property("checked", false);
+      mangosAfterPut.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      mangosAfterPut.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      orangesAfterPut.should.have.deep.property("_id", oranges._id);
+      orangesAfterPut.should.have.deep.property("_rev").that.is.a("string");
+      orangesAfterPut.should.have.deep.property("type", "item");
+      orangesAfterPut.should.have.deep.property("list", groceries._id);
+      orangesAfterPut.should.have.deep.property("title", "Oranges");
+      orangesAfterPut.should.have.deep.property("checked", false);
+      orangesAfterPut.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      orangesAfterPut.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
+      pearsAfterPut.should.have.deep.property("_id", pears._id);
+      pearsAfterPut.should.have.deep.property("_rev").that.is.a("string");
+      pearsAfterPut.should.have.deep.property("type", "item");
+      pearsAfterPut.should.have.deep.property("list", groceries._id);
+      pearsAfterPut.should.have.deep.property("title", "Pears");
+      pearsAfterPut.should.have.deep.property("checked", false);
+      pearsAfterPut.should.have.deep.property("createdAt", "2017-08-30T02:40:09.314Z");
+      pearsAfterPut.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
       clock.restore();
     }).should.notify(done);
   });
@@ -361,8 +361,8 @@ describe("a Shopping List Repository for PouchDB", function() {
     let oranges;
     let pears;
     this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
-      return this.shoppingListRepository.post(groceries);
-    }).should.be.fulfilled.then(groceriesAfterPost => {
+      return this.shoppingListRepository.put(groceries);
+    }).should.be.fulfilled.then(groceriesAfterPut => {
       mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
@@ -373,8 +373,8 @@ describe("a Shopping List Repository for PouchDB", function() {
         title: "Pears"
       }, groceries);
       const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
-      return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
-    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
+      return this.shoppingListRepository.putItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPut => {
       return this.shoppingListRepository.findItemsCountByList({
         selector: {
           type: "item",
@@ -395,8 +395,8 @@ describe("a Shopping List Repository for PouchDB", function() {
     let oranges;
     let pears;
     this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
-      return this.shoppingListRepository.post(groceries);
-    }).should.be.fulfilled.then(groceriesAfterPost => {
+      return this.shoppingListRepository.put(groceries);
+    }).should.be.fulfilled.then(groceriesAfterPut => {
       mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos",
         checked: true,
@@ -409,8 +409,8 @@ describe("a Shopping List Repository for PouchDB", function() {
         title: "Pears"
       }, groceries);
       const listOfGroceriesItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears]);
-      return this.shoppingListRepository.postItemsBulk(listOfGroceriesItems);
-    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPost => {
+      return this.shoppingListRepository.putItemsBulk(listOfGroceriesItems);
+    }).should.be.fulfilled.then(listOfGroceriesItemsAfterPut => {
       return this.shoppingListRepository.findItemsCountByList({
         selector: {
           type: "item",
@@ -438,8 +438,8 @@ describe("a Shopping List Repository for PouchDB", function() {
     let socks;
     const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
     this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
-      return this.shoppingListRepository.postBulk(listOfShoppingLists);
-    }).should.be.fulfilled.then(groceriesAfterPost => {
+      return this.shoppingListRepository.putBulk(listOfShoppingLists);
+    }).should.be.fulfilled.then(groceriesAfterPut => {
       mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
@@ -456,8 +456,8 @@ describe("a Shopping List Repository for PouchDB", function() {
         title: "Socks"
       }, campingSupplies);
       const listOfListItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears, carabiners, socks]);
-      return this.shoppingListRepository.postItemsBulk(listOfListItems);
-    }).should.be.fulfilled.then(listOfListItemsAfterPost => {
+      return this.shoppingListRepository.putItemsBulk(listOfListItems);
+    }).should.be.fulfilled.then(listOfListItemsAfterPut => {
       return this.shoppingListRepository.findItemsCountByList();
     }).should.be.fulfilled.then(listItemsCount => {
       listItemsCount.size.should.equal(2);
@@ -480,8 +480,8 @@ describe("a Shopping List Repository for PouchDB", function() {
     let socks;
     const listOfShoppingLists = this.shoppingListFactory.newListOfShoppingLists([groceries, campingSupplies]);
     this.shoppingListRepository.ensureIndexes().should.be.fulfilled.then(result => {
-      return this.shoppingListRepository.postBulk(listOfShoppingLists);
-    }).should.be.fulfilled.then(groceriesAfterPost => {
+      return this.shoppingListRepository.putBulk(listOfShoppingLists);
+    }).should.be.fulfilled.then(groceriesAfterPut => {
       mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos",
         checked: true
@@ -501,8 +501,8 @@ describe("a Shopping List Repository for PouchDB", function() {
         title: "Socks"
       }, campingSupplies);
       const listOfListItems = this.shoppingListFactory.newListOfShoppingListItems([mangos, oranges, pears, carabiners, socks]);
-      return this.shoppingListRepository.postItemsBulk(listOfListItems);
-    }).should.be.fulfilled.then(listOfListItemsAfterPost => {
+      return this.shoppingListRepository.putItemsBulk(listOfListItems);
+    }).should.be.fulfilled.then(listOfListItemsAfterPut => {
       return this.shoppingListRepository.findItemsCountByList({
         selector: {
           type: "item",
@@ -521,25 +521,25 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    let revAfterPost;
+    let revAfterPut;
     let clock;
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
       const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
-      return this.shoppingListRepository.postItem(mangos);
-    }).should.be.fulfilled.then(mangosAfterPost => {
-      revAfterPost = mangosAfterPost._rev;
-      const mangosAfterPostUpdated = mangosAfterPost.set("checked", true);
+      return this.shoppingListRepository.putItem(mangos);
+    }).should.be.fulfilled.then(mangosAfterPut => {
+      revAfterPut = mangosAfterPut._rev;
+      const mangosAfterPutUpdated = mangosAfterPut.set("checked", true);
       clock = sinon.useFakeTimers(1504060809314);
-      return this.shoppingListRepository.putItem(mangosAfterPostUpdated);
+      return this.shoppingListRepository.putItem(mangosAfterPutUpdated);
     }).should.be.fulfilled.then(mangosAfterPut => {
       mangosAfterPut.should.be.an.instanceof(Record);
       mangosAfterPut._id.should.be.a("string")
         .with.length(30)
         .that.is.a.singleLine()
         .and.startsWith("item:");
-      mangosAfterPut.should.have.deep.property("_rev").that.is.a("string").and.does.not.equal(revAfterPost);
+      mangosAfterPut.should.have.deep.property("_rev").that.is.a("string").and.does.not.equal(revAfterPut);
       mangosAfterPut.should.have.deep.property("type", "item");
       mangosAfterPut.should.have.deep.property("version", 1);
       mangosAfterPut.should.have.deep.property("title", "Mangos");
@@ -554,26 +554,26 @@ describe("a Shopping List Repository for PouchDB", function() {
     const groceries = this.shoppingListFactory.newShoppingList({
       title: "Groceries"
     });
-    let idAfterPost;
-    let revAfterPost;
+    let idAfterPut;
+    let revAfterPut;
     let clock;
-    this.shoppingListRepository.post(groceries).should.be.fulfilled.then(groceriesAfterPost => {
+    this.shoppingListRepository.put(groceries).should.be.fulfilled.then(groceriesAfterPut => {
       const mangos = this.shoppingListFactory.newShoppingListItem({
         title: "Mangos"
       }, groceries);
-      return this.shoppingListRepository.postItem(mangos);
-    }).should.be.fulfilled.then(mangosAfterPost => {
-      idAfterPost = mangosAfterPost._id;
-      revAfterPost = mangosAfterPost._rev;
+      return this.shoppingListRepository.putItem(mangos);
+    }).should.be.fulfilled.then(mangosAfterPut => {
+      idAfterPut = mangosAfterPut._id;
+      revAfterPut = mangosAfterPut._rev;
       clock = sinon.useFakeTimers(1504060809314);
-      return this.shoppingListRepository.deleteItem(mangosAfterPost);
+      return this.shoppingListRepository.deleteItem(mangosAfterPut);
     }).should.be.fulfilled.then(mangosAfterDelete => {
       mangosAfterDelete.should.be.an.instanceof(Record);
       mangosAfterDelete._id.should.be.a("string")
         .with.length(30)
         .that.is.a.singleLine()
         .and.startsWith("item:");
-      mangosAfterDelete.should.have.deep.property("_rev").that.is.a("string").and.does.not.equal(revAfterPost);
+      mangosAfterDelete.should.have.deep.property("_rev").that.is.a("string").and.does.not.equal(revAfterPut);
       mangosAfterDelete.should.have.deep.property("_deleted", true);
       mangosAfterDelete.should.have.deep.property("type", "item");
       mangosAfterDelete.should.have.deep.property("version", 1);
@@ -582,7 +582,7 @@ describe("a Shopping List Repository for PouchDB", function() {
       mangosAfterDelete.should.have.deep.property("createdAt", "2017-08-30T02:40:08.000Z");
       mangosAfterDelete.should.have.deep.property("updatedAt", "2017-08-30T02:40:09.314Z");
       clock.restore();
-      return this.shoppingListRepository.getItem(idAfterPost).should.be.rejectedWith(Error);
+      return this.shoppingListRepository.getItem(idAfterPut).should.be.rejectedWith(Error);
     }).should.notify(done);
   });
 

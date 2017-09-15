@@ -62,22 +62,13 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     }
   }
 
-  _post(record) {
-    const createdAt = new Date().toISOString();
-    record = record.mergeDeep({
-      createdAt: createdAt,
-      updatedAt: createdAt
-    });
-    return this.db.put(record.toJSON()).then(result => {
-      return record.mergeDeep({
-        _id: result.id,
-        _rev: result.rev
-      });
-    });
-  }
-
   _put(record) {
     const updatedAt = new Date().toISOString();
+    if (!record._rev) {
+      record = record.mergeDeep({
+        createdAt: updatedAt
+      });
+    }
     record = record.mergeDeep({
       updatedAt: updatedAt
     });
@@ -147,24 +138,19 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     ]);
   }
 
-  post(shoppingList) {
-    this._guardShoppingList(shoppingList);
-    return this._post(shoppingList);
-  }
-
-  postBulk(shoppingLists) {
-    let postedLists = [];
-    shoppingLists.forEach(shoppingList => {
-      postedLists.push(this.post(shoppingList));
-    });
-    return Promise.all(postedLists).then(shoppingLists => {
-      return this._shoppingListFactory.newListOfShoppingLists(shoppingLists);
-    });
-  }
-
   put(shoppingList) {
     this._guardShoppingList(shoppingList);
     return this._put(shoppingList);
+  }
+
+  putBulk(shoppingLists) {
+    let putLists = [];
+    shoppingLists.forEach(shoppingList => {
+      putLists.push(this.put(shoppingList));
+    });
+    return Promise.all(putLists).then(shoppingLists => {
+      return this._shoppingListFactory.newListOfShoppingLists(shoppingLists);
+    });
   }
 
   get(shoppingListId) {
@@ -194,24 +180,19 @@ class ShoppingListRepositoryPouchDB extends ShoppingListRepository {
     return this._delete(shoppingList);
   }
 
-  postItem(shoppingListItem) {
-    this._guardShoppingListItem(shoppingListItem);
-    return this._post(shoppingListItem);
-  }
-
-  postItemsBulk(shoppingListItems) {
-    let postedItems = [];
-    shoppingListItems.forEach(shoppingListItem => {
-      postedItems.push(this.postItem(shoppingListItem));
-    });
-    return Promise.all(postedItems).then(shoppingListItems => {
-      return this._shoppingListFactory.newListOfShoppingListItems(shoppingListItems);
-    });
-  }
-
   putItem(shoppingListItem) {
     this._guardShoppingListItem(shoppingListItem);
     return this._put(shoppingListItem);
+  }
+
+  putItemsBulk(shoppingListItems) {
+    let putItems = [];
+    shoppingListItems.forEach(shoppingListItem => {
+      putItems.push(this.putItem(shoppingListItem));
+    });
+    return Promise.all(putItems).then(shoppingListItems => {
+      return this._shoppingListFactory.newListOfShoppingListItems(shoppingListItems);
+    });
   }
 
   getItem(shoppingListItemId) {

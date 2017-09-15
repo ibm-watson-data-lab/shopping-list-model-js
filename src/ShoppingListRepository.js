@@ -2,11 +2,9 @@
 
 class ShoppingListRepository {
 
-  post(shoppingList) { }
-
-  postBulk(shoppingLists) { }
-
   put(shoppingList) { }
+
+  putBulk(shoppingLists) { }
 
   get(shoppingListId) { }
 
@@ -14,11 +12,9 @@ class ShoppingListRepository {
 
   delete(shoppingList) { }
 
-  postItem(shoppingListItem) { }
-
-  postItemsBulk(shoppingListItems) { }
-
   putItem(shoppingListItem) { }
+
+  putItemsBulk(shoppingListItems) { }
 
   getItem(shoppingListItemId) { }
 

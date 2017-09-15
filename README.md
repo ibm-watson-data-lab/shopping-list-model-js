@@ -59,7 +59,7 @@ let shoppingList = shoppingListFactory.newShoppingList({
   title: "Groceries"
 });
 
-shoppingListRepository.post(shoppingList).then(shoppingList => {
+shoppingListRepository.put(shoppingList).then(shoppingList => {
   console.log(shoppingList._id);                    // list:…
   console.log(shoppingList._rev);                   // 1-…
   console.log(shoppingList.title);                  // Groceries
@@ -111,7 +111,7 @@ let listOfShoppingLists = shoppingListFactory.newListOfShoppingLists([
 ]);
 
 shoppingListRepository.ensureIndexes().then(result => {
-  return shoppingListRepository.postBulk(listOfShoppingLists);
+  return shoppingListRepository.putBulk(listOfShoppingLists);
 }).then(listOfShoppingLists => {
   return shoppingListRepository.find();
 }).then(listOfShoppingLists => {
@@ -164,7 +164,7 @@ let shoppingList = shoppingListFactory.newShoppingList({
   title: "Groceries"
 });
 
-shoppingListRepository.post(shoppingList).then(shoppingList => {
+shoppingListRepository.put(shoppingList).then(shoppingList => {
   shoppingList = shoppingList.set("checked", true);
   return shoppingListRepository.put(shoppingList);
 }).then(shoppingList => {
@@ -190,7 +190,7 @@ let shoppingList = shoppingListFactory.newShoppingList({
   title: "Groceries"
 });
 
-shoppingListRepository.post(shoppingList).then(shoppingList => {
+shoppingListRepository.put(shoppingList).then(shoppingList => {
   console.log(shoppingList._id);                    // list:…
   console.log(shoppingList._rev);                   // 1-…
   console.log(shoppingList.title);                  // Groceries
@@ -246,8 +246,8 @@ let shoppingListItem = shoppingListFactory.newShoppingListItem({
   title: "Mangos"
 }, shoppingList);
 
-shoppingListRepository.post(shoppingList).then(shoppingList => {
-  return shoppingListRepository.postItem(shoppingListItem);
+shoppingListRepository.put(shoppingList).then(shoppingList => {
+  return shoppingListRepository.putItem(shoppingListItem);
 }).then(shoppingListItem => {
   console.log(shoppingListItem._id);                // item:…
   console.log(shoppingListItem._rev);               // 1-…
@@ -307,9 +307,9 @@ let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
 ]);
 
 shoppingListRepository.ensureIndexes().then(result => {
-  return shoppingListRepository.post(shoppingList);
+  return shoppingListRepository.put(shoppingList);
 }).then(shoppingList => {
-  return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+  return shoppingListRepository.putItemsBulk(listOfGroceriesItems);
 }).then(listOfGroceriesItems => {
   return shoppingListRepository.findItems({
     selector: {
@@ -358,9 +358,9 @@ let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
 ]);
 
 shoppingListRepository.ensureIndexes().then(result => {
-  return shoppingListRepository.post(shoppingList);
+  return shoppingListRepository.put(shoppingList);
 }).then(shoppingList => {
-  return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+  return shoppingListRepository.putItemsBulk(listOfGroceriesItems);
 }).then(listOfGroceriesItems => {
   return shoppingListRepository.findItemsCountByList({
     selector: {
@@ -410,9 +410,9 @@ let listOfGroceriesItems = shoppingListFactory.newListOfShoppingListItems([
 ]);
 
 shoppingListRepository.ensureIndexes().then(result => {
-  return shoppingListRepository.post(shoppingList);
+  return shoppingListRepository.put(shoppingList);
 }).then(shoppingList => {
-  return shoppingListRepository.postItemsBulk(listOfGroceriesItems);
+  return shoppingListRepository.putItemsBulk(listOfGroceriesItems);
 }).then(listOfGroceriesItems => {
   return shoppingListRepository.findItemsCountByList({
     selector: {
@@ -477,9 +477,9 @@ let listOfShoppingListItems = shoppingListFactory.newListOfShoppingListItems([
 ]);
 
 shoppingListRepository.ensureIndexes().then(result => {
-  return shoppingListRepository.postBulk(listOfShoppingLists);
+  return shoppingListRepository.putBulk(listOfShoppingLists);
 }).then(listOfShoppingLists => {
-  return shoppingListRepository.postItemsBulk(listOfShoppingListItems);
+  return shoppingListRepository.putItemsBulk(listOfShoppingListItems);
 }).then(listOfShoppingListItems => {
   return shoppingListRepository.findItemsCountByList();
 }).then(itemsCount => {
@@ -541,9 +541,9 @@ let listOfShoppingListItems = shoppingListFactory.newListOfShoppingListItems([
 ]);
 
 shoppingListRepository.ensureIndexes().then(result => {
-  return shoppingListRepository.postBulk(listOfShoppingLists);
+  return shoppingListRepository.putBulk(listOfShoppingLists);
 }).then(listOfShoppingLists => {
-  return shoppingListRepository.postItemsBulk(listOfShoppingListItems);
+  return shoppingListRepository.putItemsBulk(listOfShoppingListItems);
 }).then(listOfShoppingListItems => {
   return shoppingListRepository.findItemsCountByList({
     selector: {
@@ -606,8 +606,8 @@ let shoppingListItem = shoppingListFactory.newShoppingListItem({
   title: "Mangos"
 }, shoppingList);
 
-shoppingListRepository.post(shoppingList).then(shoppingList => {
-  return shoppingListRepository.postItem(shoppingListItem);
+shoppingListRepository.put(shoppingList).then(shoppingList => {
+  return shoppingListRepository.putItem(shoppingListItem);
 }).then(shoppingListItem => {
   shoppingListItem = shoppingListItem.set("checked", true);
   return shoppingListRepository.putItem(shoppingListItem);
@@ -638,8 +638,8 @@ let shoppingListItem = shoppingListFactory.newShoppingListItem({
   title: "Mangos"
 }, shoppingList);
 
-shoppingListRepository.post(shoppingList).then(shoppingList => {
-  return shoppingListRepository.postItem(shoppingListItem);
+shoppingListRepository.put(shoppingList).then(shoppingList => {
+  return shoppingListRepository.putItem(shoppingListItem);
 }).then(shoppingListItem => {
   console.log(shoppingListItem._id);                // item:…
   console.log(shoppingListItem._rev);               // 1-…
