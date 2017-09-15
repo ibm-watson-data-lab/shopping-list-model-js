@@ -1,8 +1,7 @@
 [![Build Status](https://travis-ci.org/ibm-watson-data-lab/shopping-list-model-js.svg?branch=master)](https://travis-ci.org/ibm-watson-data-lab/shopping-list-model-js)
+[![Greenkeeper badge](https://badges.greenkeeper.io/ibm-watson-data-lab/shopping-list-model-js.svg)](https://greenkeeper.io/)
 
 # Shopping List Domain Model
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/ibm-watson-data-lab/shopping-list-model-js.svg)](https://greenkeeper.io/)
 
 **Note:** This is a work in progress. Use exact versions when installing (e.g. `--save-exact`) as backwards-incompatible changes may be introduced.
 
