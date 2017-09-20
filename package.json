@@ -9,6 +9,8 @@
     "test": "npm run test-mocha && npm run test-karma",
     "posttest": "npm run eslint",
     "eslint": "eslint src/ test/",
+    "build-client": "webpack",
+    "build": "npm run build-client",
     "repl": "node repl.js",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
