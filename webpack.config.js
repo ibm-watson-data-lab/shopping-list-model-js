@@ -8,5 +8,16 @@ module.exports = {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
     library: "ShoppingListModel"
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+        query: {
+          presets: ["es2015"]
+        }
+      }
+    ]
   }
 };
