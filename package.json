@@ -9,7 +9,7 @@
     "test": "npm run test-mocha && npm run test-karma",
     "posttest": "npm run eslint",
     "eslint": "eslint src/ test/",
-    "build-client": "webpack",
+    "build-client": "webpack && webpack --config webpack.config.es6.js",
     "build": "npm run build-client",
     "repl": "node repl.js",
     "preversion": "npm test",
