@@ -55,7 +55,7 @@
     "mocha": "^3.5.3",
     "pouchdb-find": "^6.3.4",
     "pouchdb-memory": "^6.0.0",
-    "sinon": "^3.3.0",
+    "sinon": "^4.0.0",
     "webpack": "^3.6.0"
   }
 }
