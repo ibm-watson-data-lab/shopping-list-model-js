@@ -7,7 +7,9 @@ module.exports = {
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
-    library: "ShoppingListModel"
+    library: "ShoppingListModel",
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   module: {
     loaders: [
