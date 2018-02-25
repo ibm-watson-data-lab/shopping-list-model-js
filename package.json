@@ -56,6 +56,6 @@
     "pouchdb-find": "^6.4.2",
     "pouchdb-memory": "^6.0.0",
     "sinon": "^4.2.1",
-    "webpack": "^3.10.0"
+    "webpack": "^4.0.0"
   }
 }
