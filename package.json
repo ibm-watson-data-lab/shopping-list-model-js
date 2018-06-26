@@ -45,7 +45,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-immutable": "^1.6.0",
     "chai-string": "^1.4.0",
-    "eslint": "^4.16.0",
+    "eslint": "^5.0.1",
     "karma": "^2.0.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
