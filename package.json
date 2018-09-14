@@ -52,7 +52,7 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-mocha": "^1.3.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^3.0.0",
+    "karma-webpack": "^3.0.5",
     "mocha": "^5.0.0",
     "pouchdb-find": "^6.4.2",
     "pouchdb-memory": "^6.0.0",
