@@ -58,7 +58,7 @@
     "pouchdb-memory": "^6.0.0",
     "sinon": "^6.0.1",
     "tunnel-agent": "^0.6.0",
-    "webpack": "^4.2.0",
+    "webpack": "^4.22.0",
     "webpack-command": "^0.4.1"
   }
 }
