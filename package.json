@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/ibm-watson-data-lab/shopping-list-model-js#readme",
   "dependencies": {
-    "cuid": "^2.0.2",
+    "cuid": "2.1.4",
     "immutable": "^4.0.0-rc.9"
   },
   "devDependencies": {
