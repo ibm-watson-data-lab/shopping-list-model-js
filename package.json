@@ -45,7 +45,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-immutable": "^1.6.0",
     "chai-string": "^1.4.0",
-    "eslint": "^5.0.0",
+    "eslint": "^5.15.2",
     "hoek": "^5.0.3",
     "karma": "^2.0.5",
     "karma-chai": "^0.1.0",
